@@ -1,0 +1,8 @@
+
+setup() {
+    fullScreen();
+}
+
+draw() {
+
+}
