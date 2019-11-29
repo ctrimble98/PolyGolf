@@ -1,10 +1,10 @@
 static class PolygonGenerator {
 
     //Structure of function taken from processing docs
-    static ArrayList<PVector> getRegularPolygon(int sides, int radius, PVector centre) {
+    static ArrayList<PVector> getRegularPolygon(int sides, int radius, float offsetAngle, PVector centre) {
         ArrayList<PVector> points = new ArrayList<PVector>();
         float angle = 2*PI / sides;
-        for (float a = 0; a < 2*PI; a += angle) {
+        for (float a = offsetAngle; a < offsetAngle + 2*PI; a += angle) {
             float x = centre.x + cos(a) * radius;
             float y = centre.y + sin(a) * radius;
             points.add(new PVector(x, y));

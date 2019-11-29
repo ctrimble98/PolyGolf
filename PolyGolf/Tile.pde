@@ -35,6 +35,10 @@ class Tile {
         this.position = position;
     }
 
+    public PVector getPosition() {
+        return position;
+    }
+
     public void draw(Environment environment) {
         pushMatrix();
         translate(position.x, position.y);
