@@ -1,11 +1,11 @@
 class Polygon {
-    private ArrayList<PVector> points;
+    private List<PVector> points;
 
-    public Polygon(ArrayList<PVector> points) {
+    public Polygon(List<PVector> points) {
         this.points = points;
     }
 
-    public ArrayList<PVector> getPoints() {
+    public List<PVector> getPoints() {
         return points;
     }
 
@@ -13,7 +13,9 @@ class Polygon {
         beginShape();
         for (PVector p: points) {
             vertex(p.x, p.y);
+            System.out.println(p);
         }
         endShape(CLOSE);
+        System.out.println();
     }
 }

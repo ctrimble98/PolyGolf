@@ -1,4 +1,4 @@
-static class {
+static class PolygonGenerator {
 
     //Structure of function taken from processing docs
     static ArrayList<PVector> getRegularPolygon(int sides, int radius, PVector centre) {
@@ -9,12 +9,13 @@ static class {
             float y = centre.y + sin(a) * radius;
             points.add(new PVector(x, y));
         }
+        return points;
     }
 
-    static ArrayList<PVector> getRectangle(PVector topLeft, PVector bottomRight) {
+    static List<PVector> getRectangle(PVector topLeft, PVector bottomRight) {
 
-        PVector topLeft = new PVector(topLeft.x, bottomRight.y);
+        PVector bottomLeft = new PVector(topLeft.x, bottomRight.y);
         PVector topRight = new PVector(bottomRight.x, topLeft.y);
-        return new ArrayList<PVector>(topLeft.copy(), bottomLeft, bottomRight.copy(), topRight);
+        return Arrays.asList(topLeft.copy(), bottomLeft, bottomRight.copy(), topRight);
     }
 }
