@@ -1,6 +1,6 @@
-class Particle {
+abstract class Particle {
 
-    private PVector position;
+    protected PVector position;
     private PVector velocity;
 
     public Particle(PVector position) {

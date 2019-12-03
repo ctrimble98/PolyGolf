@@ -4,8 +4,8 @@ class Player extends Particle {
     private List<PVector> points;
 
     public Player(PVector start, ArrayList<PVector> points) {
+        super(start);
         this.points = points;
-        this.position = start;
         setImage();
     }
 
