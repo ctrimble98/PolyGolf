@@ -1,5 +1,7 @@
 class Polygon {
-    private List<PVector> points;
+    private PGraphics pg;
+    protected List<PVector> points;
+    protected PVector position;
 
     public Polygon(List<PVector> points) {
         this.points = points;
@@ -9,13 +11,11 @@ class Polygon {
         return points;
     }
 
-    public void draw() {
-        beginShape();
+    public void setImage(PGraphics pg) {
+        pg.beginShape();
         for (PVector p: points) {
-            vertex(p.x, p.y);
-            System.out.println(p);
+            pg.vertex(p.x, p.y);
         }
-        endShape(CLOSE);
-        System.out.println();
+        pg.endShape(CLOSE);
     }
 }

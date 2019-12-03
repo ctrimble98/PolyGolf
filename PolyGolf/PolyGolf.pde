@@ -1,6 +1,6 @@
 import java.util.*;
 
-PreDefTiles tiles = new PreDefTiles();
+PreDefTiles tiles;
 
 final color PLAYER_COLOUR = color(255);
 
@@ -12,8 +12,12 @@ Environment grass = new Environment(
 Hole hole;
 Player player;
 
-void setup() {
+public void settings(){
     fullScreen();
+}
+
+void setup() {
+    tiles = new PreDefTiles();
     Tile[][] holeTiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
 
     holeTiles[(Constants.GRID_SIZE - 1)/2][3] = tiles.basicStart;
@@ -32,7 +36,7 @@ void setup() {
         }
     }
     hole = new Hole(grass, tileList, holeTiles[(Constants.GRID_SIZE - 1)/2][3], holeTiles[(Constants.GRID_SIZE - 1)/2][1]);
-    player = new Player(hole.getStart(), PolygonGenerator.getRegularPolygon(4, Constants.PLAYER_RADIUS, PI/4, hole.getStart()));
+    player = new Player(hole.getStart(), PolygonGenerator.getRegularPolygon(4, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
 }
 
 void draw() {

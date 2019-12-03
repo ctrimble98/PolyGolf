@@ -19,6 +19,10 @@ class Hole {
         this.environment = environment;
         holePos = end.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2);
         startPos = start.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2);
+
+        for (Tile t: tileList) {
+            t.init(environment);
+        }
     }
 
     public void draw() {

@@ -4,6 +4,7 @@ class Tile {
     private int TILE_SIZE;
     private PImage image;
     private PVector position;
+    private PGraphics pg;
 
     public Tile(boolean[] borders, ArrayList<Polygon> obstacles) {
         this.obstacles = obstacles;
@@ -40,14 +41,29 @@ class Tile {
     }
 
     public void draw(Environment environment) {
-        pushMatrix();
-        translate(position.x, position.y);
-        fill(environment.getGroundColour());
-        rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
-        fill(environment.getObstacleColour());
+        // pushMatrix();
+        // translate(position.x, position.y);
+        // fill(environment.getGroundColour());
+        // rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        // fill(environment.getObstacleColour());
+        // for (Polygon o: obstacles) {
+        //     o.draw();
+        // }
+        // popMatrix();
+        imageMode(CORNER);
+        image(pg, position.x, position.y);
+    }
+
+    private void init(Environment environment) {
+        pg = createGraphics(Constants.TILE_SIZE, Constants.TILE_SIZE);
+        pg.beginDraw();
+        pg.noStroke();
+        pg.fill(environment.getGroundColour());
+        pg.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        pg.fill(environment.getObstacleColour());
         for (Polygon o: obstacles) {
-            o.draw();
+            o.setImage(pg);
         }
-        popMatrix();
+        pg.endDraw();
     }
 }
