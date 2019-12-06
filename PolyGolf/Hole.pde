@@ -40,4 +40,39 @@ class Hole {
     public PVector getStart() {
         return startPos;
     }
+
+    public void checkCollsions(PVector player) {
+
+        //Check current tile
+
+        int[] tile = new int[]{player.x/Constants.TILE_SIZE, player.y/Constants.TILE_SIZE]};
+        PVector offSet = player.copy().sub(tile[0], tile[1]);
+        boolean xLeft = offset.x < Constants.PLAYER_RADIUS;
+        boolean yTop = offset.y < Constants.PLAYER_RADIUS;
+        boolean xRight = (offset.x - Constants.TILE_SIZE) < Constants.PLAYER_RADIUS;
+        boolean yBottom = (offset.y - Constants.TILE_SIZE) < Constants.PLAYER_RADIUS;
+        //Refactor for method from robotron
+        if (xLeft) {
+            //Check collsion left
+            if (yTop) {
+                //CheckTop
+                //CheckTopLeft
+            } else if (yBottom) {
+                //CheckBottomLeft
+            }
+        } else if (xRight) {
+            //Check collsion right
+            if (yTop) {
+                //CheckTop
+                //CheckTopRight
+            } else if (yBottom) {
+                //CheckBottom
+                //CheckBottomRight
+            }
+        } else if (yTop) {
+            //CheckTop
+        } else if (yBottom) {
+            //CheckBottom
+        }
+    }
 }

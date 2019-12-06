@@ -41,5 +41,6 @@ void setup() {
 
 void draw() {
     hole.draw();
+    player.update();
     player.draw();
 }

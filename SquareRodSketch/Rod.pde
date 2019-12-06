@@ -34,7 +34,7 @@ public class Rod extends ContactGenerator {
 
      // Otherwise return the contact.
      // Calculate the normal.
-     PVector contactNormal = p2.position.get() ;
+     PVector contactNormal = p2.position.copy() ;
      contactNormal.sub(p1.position) ;
      contactNormal.normalize() ;
      // Direction depends on whether we are extending or compressing

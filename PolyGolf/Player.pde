@@ -10,8 +10,12 @@ class Player extends Particle {
     }
 
     public void draw() {
+        pushMatrix();
+        translate(position.x, position.y);
+        rotate(orientation);
         imageMode(CENTER);
-        image(pg, position.x, position.y);
+        image(pg, 0, 0);
+        popMatrix();
     }
 
     private void setImage() {
