@@ -66,4 +66,14 @@ class Tile {
         }
         pg.endDraw();
     }
+
+    public void checkCollisions(Player player) {
+        PVector playerRelPosition = player.getPosition().copy().sub(position);
+        for (Polygon o: obstacles) {
+            if (PhysicsEngine.checkCollsionCircPoly(playerRelPosition, Constants.PLAYER_RADIUS, o.getPoints())) {
+                System.out.println("TEST");
+                background(255);
+            }
+        }
+    }
 }
