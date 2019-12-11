@@ -1,9 +1,9 @@
-class Polygon {
-    private PGraphics pg;
-    protected List<PVector> points;
-    protected PVector position;
+class Polygon extends Shape {
 
-    public Polygon(List<PVector> points) {
+    private List<PVector> points;
+
+    public Polygon(List<PVector> points, PVector centre, float boundingRadius) {
+        super(ShapeType.POLYGON, centre, boundingRadius);
         this.points = points;
     }
 

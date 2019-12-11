@@ -37,5 +37,4 @@ abstract class Particle {
         integrate();
         updateOrientation();
     }
-
 }

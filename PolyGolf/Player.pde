@@ -1,11 +1,13 @@
 class Player extends Particle {
 
     private PGraphics pg;
+    private Shape shape;
     private List<PVector> points;
 
-    public Player(PVector start, ArrayList<PVector> points) {
+    public Player(PVector start, Shape shape) {
         super(start);
         this.points = points;
+        this.shape = shape;
         setImage();
     }
 
@@ -23,11 +25,11 @@ class Player extends Particle {
         pg.beginDraw();
         pg.fill(PLAYER_COLOUR);
         pg.noStroke();
-        pg.beginShape();
-        for (PVector p: points) {
-            pg.vertex(p.x, p.y);
-        }
-        pg.endShape(CLOSE);
+        shape.setImage(pg);
         pg.endDraw();
+    }
+
+    public Shape getShape() {
+        return shape;
     }
 }

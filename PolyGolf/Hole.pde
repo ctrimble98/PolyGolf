@@ -51,8 +51,8 @@ class Hole {
 
                 t.checkCollisions(player);
 
-                // fill(255,0,0);
-                // rect(t.getPosition().x, t.getPosition().y, Constants.TILE_SIZE, Constants.TILE_SIZE);
+                fill(255,0,0);
+                rect(t.getPosition().x, t.getPosition().y, Constants.TILE_SIZE, Constants.TILE_SIZE);
             }
         }
     }

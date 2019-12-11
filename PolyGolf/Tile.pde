@@ -1,12 +1,12 @@
 class Tile {
 
-    private ArrayList<Polygon> obstacles;
+    private ArrayList<Shape> obstacles;
     private int TILE_SIZE;
     private PImage image;
     private PVector position;
     private PGraphics pg;
 
-    public Tile(boolean[] borders, ArrayList<Polygon> obstacles) {
+    public Tile(boolean[] borders, ArrayList<Shape> obstacles) {
         this.obstacles = obstacles;
         addBorders(borders);
     }
@@ -16,16 +16,16 @@ class Tile {
             if (borders[i]) {
                 switch (i) {
                     case 0:
-                        obstacles.add(new Polygon(PolygonGenerator.getRectangle(new PVector(0, Constants.TILE_SIZE), new PVector(Constants.TILE_SIZE, Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH))));
+                        obstacles.add(polyGen.getRectangle(new PVector(0, Constants.TILE_SIZE), new PVector(Constants.TILE_SIZE, Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH)));
                         break;
                     case 1:
-                        obstacles.add(new Polygon(PolygonGenerator.getRectangle(new PVector(0, 0), new PVector(Constants.HOLE_BORDER_WIDTH, Constants.TILE_SIZE))));
+                        obstacles.add(polyGen.getRectangle(new PVector(0, 0), new PVector(Constants.HOLE_BORDER_WIDTH, Constants.TILE_SIZE)));
                         break;
                     case 2:
-                        obstacles.add(new Polygon(PolygonGenerator.getRectangle(new PVector(0, 0), new PVector(Constants.TILE_SIZE, Constants.HOLE_BORDER_WIDTH))));
+                        obstacles.add(polyGen.getRectangle(new PVector(0, 0), new PVector(Constants.TILE_SIZE, Constants.HOLE_BORDER_WIDTH)));
                         break;
                     case 3:
-                        obstacles.add(new Polygon(PolygonGenerator.getRectangle(new PVector(Constants.TILE_SIZE, 0), new PVector(Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH, Constants.TILE_SIZE))));
+                        obstacles.add(polyGen.getRectangle(new PVector(Constants.TILE_SIZE, 0), new PVector(Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH, Constants.TILE_SIZE)));
                         break;
                 }
             }
@@ -61,7 +61,7 @@ class Tile {
         pg.fill(environment.getGroundColour());
         pg.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
         pg.fill(environment.getObstacleColour());
-        for (Polygon o: obstacles) {
+        for (Shape o: obstacles) {
             o.setImage(pg);
         }
         pg.endDraw();
@@ -69,10 +69,10 @@ class Tile {
 
     public void checkCollisions(Player player) {
         PVector playerRelPosition = player.getPosition().copy().sub(position);
-        for (Polygon o: obstacles) {
-            if (PhysicsEngine.checkCollsionCircPoly(playerRelPosition, Constants.PLAYER_RADIUS, o.getPoints())) {
+        for (Shape o: obstacles) {
+            if (PhysicsEngine.checkCollision(player.getShape(), o)) {
+                // if (PhsyicsEngine.checkCollisionPolyPoly)
                 System.out.println("TEST");
-                background(255);
             }
         }
     }

@@ -1,6 +1,7 @@
 import java.util.*;
 
 PreDefTiles tiles;
+PolygonGenerator polyGen;
 
 final color PLAYER_COLOUR = color(255);
 
@@ -20,6 +21,8 @@ public void settings(){
 
 void setup() {
     tiles = new PreDefTiles();
+    polyGen = new PolygonGenerator();
+
     Tile[][] holeTiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
 
     holeTiles[(Constants.GRID_SIZE - 1)/2][3] = tiles.getBasicStart();
@@ -40,7 +43,7 @@ void setup() {
         }
     }
     hole = new Hole(grass, holeTiles, tileList, holeTiles[(Constants.GRID_SIZE - 1)/2][3], holeTiles[(Constants.GRID_SIZE - 1)/2][1]);
-    player = new Player(hole.getStart(), PolygonGenerator.getRegularPolygon(4, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    player = new Player(hole.getStart(), polyGen.getRegularPolygon(4, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
 }
 
 void draw() {
@@ -48,4 +51,11 @@ void draw() {
     player.update();
     hole.checkCollisions(player);
     player.draw();
+    drawStats();
+}
+
+public void drawStats() {
+    fill(0);
+    textAlign(LEFT, TOP);
+    text(frameRate, 0, 0);
 }
