@@ -28,8 +28,8 @@ void setup() {
     holeTiles[(Constants.GRID_SIZE - 1)/2][3] = tiles.getBasicStart();
     holeTiles[(Constants.GRID_SIZE - 1)/2][2] = tiles.getEmptyVerticalCorridor();
     holeTiles[(Constants.GRID_SIZE - 1)/2][1] = tiles.getBasicEnd();
-    holeTiles[(Constants.GRID_SIZE - 1)/2 - 1][2] = tiles.getEmptyVerticalCorridor();
-    holeTiles[(Constants.GRID_SIZE - 1)/2 - 1][3] = tiles.getEmptyVerticalCorridor();
+    // holeTiles[(Constants.GRID_SIZE - 1)/2 - 1][2] = tiles.getEmptyVerticalCorridor();
+    // holeTiles[(Constants.GRID_SIZE - 1)/2 - 1][3] = tiles.getEmptyVerticalCorridor();
 
     ArrayList<Tile> tileList = new ArrayList<Tile>();
     float halfGridSize = Constants.TILE_SIZE*Constants.GRID_SIZE/2;
@@ -52,6 +52,7 @@ void draw() {
     hole.checkCollisions(player);
     player.draw();
     drawStats();
+    System.out.println();
 }
 
 public void drawStats() {

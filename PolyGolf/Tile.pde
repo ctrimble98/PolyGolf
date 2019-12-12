@@ -63,6 +63,7 @@ class Tile {
         pg.fill(environment.getObstacleColour());
         for (Shape o: obstacles) {
             o.setImage(pg);
+            o.addOffset(position);
         }
         pg.endDraw();
     }
@@ -71,8 +72,10 @@ class Tile {
         PVector playerRelPosition = player.getPosition().copy().sub(position);
         for (Shape o: obstacles) {
             if (PhysicsEngine.checkCollision(player.getShape(), o)) {
-                // if (PhsyicsEngine.checkCollisionPolyPoly)
-                System.out.println("TEST");
+                System.out.println("Test");
+                fill(255, 0, 0);
+                imageMode(CORNER);
+                image(pg, position.x, position.y);
             }
         }
     }

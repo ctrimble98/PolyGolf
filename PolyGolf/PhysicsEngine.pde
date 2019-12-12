@@ -75,6 +75,14 @@ static class PhysicsEngine {
     // POLYGON/POLYGON
     public static boolean checkCollisionPolyPoly(List<PVector> p1, List<PVector> p2) {
 
+        for (PVector p: p1) {
+            System.out.println(p);
+        }
+        System.out.println();
+        for (PVector p: p2) {
+            System.out.println(p);
+        }
+
         // go through each of the vertices, plus the next
         // vertex in the list
         int next = 0;
@@ -114,10 +122,10 @@ static class PhysicsEngine {
         int next = 0;
         for (int current=0; current<vertices.size(); current++) {
 
-        // get next vertex in list
-        // if we've hit the end, wrap around to 0
-        next = current+1;
-        if (next == vertices.size()) next = 0;
+            // get next vertex in list
+            // if we've hit the end, wrap around to 0
+            next = current+1;
+            if (next == vertices.size()) next = 0;
 
             // get the PVectors at our current position
             // extract X/Y coordinates from each
@@ -131,6 +139,7 @@ static class PhysicsEngine {
             // stop testing (faster)
             boolean hit = checkCollisionLineLine(x1, y1, x2, y2, x3, y3, x4, y4);
             if (hit) {
+                System.out.println("Test");
                 return true;
             }
         }

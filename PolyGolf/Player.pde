@@ -9,9 +9,11 @@ class Player extends Particle {
         this.points = points;
         this.shape = shape;
         setImage();
+        shape.addOffset(position);
     }
 
     public void draw() {
+        shape.setPosition(position);
         pushMatrix();
         translate(position.x, position.y);
         rotate(orientation);

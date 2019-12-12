@@ -18,4 +18,12 @@ class Polygon extends Shape {
         }
         pg.endShape(CLOSE);
     }
+
+    public void addOffset(PVector offset) {
+        super.addOffset(offset);
+        for (PVector p: points) {
+            p.add(offset);
+        }
+        System.out.println(offset);
+    }
 }

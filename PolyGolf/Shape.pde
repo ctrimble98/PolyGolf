@@ -14,12 +14,20 @@ abstract class Shape {
         return type;
     }
 
+    public void setPosition(PVector position) {
+        this.position = position;
+    }
+
     public PVector getPosition() {
         return position;
     }
 
     public float getBoundingRadius() {
         return boundingRadius;
+    }
+
+    public void addOffset(PVector offset) {
+        position.add(offset);
     }
 
     public abstract void setImage(PGraphics pg);
