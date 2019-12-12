@@ -69,20 +69,15 @@ class Tile {
     }
 
     public void checkCollisions(Player player) {
-        PVector playerRelPosition = player.getPosition().copy().sub(position);
+        fill(0, 255, 0);
+        circle(player.getPosition().x, player.getPosition().y, 10);
         for (Shape o: obstacles) {
-            if (PhysicsEngine.checkCollision(player.getShape(), o)) {
-                System.out.println("Test");
-                PGraphics pg = createGraphics(Constants.TILE_SIZE, Constants.TILE_SIZE);
-                pg.beginDraw();
-                pg.noStroke();
-                pg.fill(255, 0, 0);
-                o.addOffset(position.copy().mult(-1));
-                o.setImage(pg);
-                o.addOffset(position);
-                pg.endDraw();
-                imageMode(CORNER);
-                image(pg, position.x, position.y);
+            PVector collision = PhysicsEngine.checkCollision(player.getShape(), o);
+            if (collision != null) {
+                noStroke();
+                fill(255, 0, 0);
+                circle(collision.x + player.getPosition().x, collision.y + player.getPosition().y, 10);
+                player.addCollision(collision);
             }
         }
     }

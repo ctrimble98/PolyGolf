@@ -9,11 +9,15 @@ abstract class Particle {
         return position;
     }
 
+    public void setPosition(PVector position) {
+        this.position = position;
+    }
+
     public Particle(PVector position) {
         this.position = position;
         orientation = 0;
-        linearV = new PVector(-1, 0);
-        angularV = 0.00;
+        linearV = new PVector(-0.5, -0.5);
+        angularV = 0.05;
     }
 
     public void integrate() {
@@ -36,5 +40,10 @@ abstract class Particle {
     public void update() {
         integrate();
         updateOrientation();
+    }
+
+    public void addCollision(PVector collision, PVector contactNormal) {
+        PVector contactNormal =
+        linearV.mult(linearV.copy().mult(-1).dot(position.copy().sub(collision).normalize()));
     }
 }

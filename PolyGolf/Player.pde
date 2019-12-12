@@ -2,11 +2,9 @@ class Player extends Particle {
 
     private PGraphics pg;
     private Shape shape;
-    private List<PVector> points;
 
     public Player(PVector start, Shape shape) {
         super(start);
-        this.points = points;
         this.shape = shape;
         setImage();
         // shape.addOffset(position);
