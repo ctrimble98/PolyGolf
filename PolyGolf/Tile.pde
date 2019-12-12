@@ -73,7 +73,14 @@ class Tile {
         for (Shape o: obstacles) {
             if (PhysicsEngine.checkCollision(player.getShape(), o)) {
                 System.out.println("Test");
-                fill(255, 0, 0);
+                PGraphics pg = createGraphics(Constants.TILE_SIZE, Constants.TILE_SIZE);
+                pg.beginDraw();
+                pg.noStroke();
+                pg.fill(255, 0, 0);
+                o.addOffset(position.copy().mult(-1));
+                o.setImage(pg);
+                o.addOffset(position);
+                pg.endDraw();
                 imageMode(CORNER);
                 image(pg, position.x, position.y);
             }

@@ -4,11 +4,14 @@ static class PhysicsEngine {
 
         if (checkCollisionCircCirc(s1.getPosition(), s1.getBoundingRadius(), s2.getPosition(), s2.getBoundingRadius())) {
             if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.POLYGON) {
-                return checkCollisionPolyPoly(((Polygon)s1).getPoints(), ((Polygon)s2).getPoints());
-            } else if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.POLYGON) {
-                return checkCollisionCircPoly(((Circle)s1).getPosition(), ((Circle)s1).getRadius(), ((Polygon)s2).getPoints());
-            } else if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.POLYGON) {
-                return checkCollisionCircPoly(((Circle)s2).getPosition(), ((Circle)s2).getRadius(), ((Polygon)s1).getPoints());
+                PVector relPos = s1.getPosition().copy().sub(s2.getPosition());
+                return checkCollisionPolyPoly(((Polygon)s1).getPoints(null), ((Polygon)s2).getPoints(relPos));
+            } else if (s1.getType() == ShapeType.CIRCLE && s2.getType() == ShapeType.POLYGON) {
+                PVector relPos = s1.getPosition().copy().sub(s2.getPosition());
+                return checkCollisionCircPoly(s1.getPosition(), s1.getBoundingRadius(), ((Polygon)s2).getPoints(relPos));
+            } else if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.CIRCLE) {
+                PVector relPos = s2.getPosition().copy().sub(s1.getPosition());
+                return checkCollisionCircPoly(s2.getPosition(), s2.getBoundingRadius(), ((Polygon)s1).getPoints(relPos));
             } else {
                 return true;
             }
@@ -75,13 +78,13 @@ static class PhysicsEngine {
     // POLYGON/POLYGON
     public static boolean checkCollisionPolyPoly(List<PVector> p1, List<PVector> p2) {
 
-        for (PVector p: p1) {
-            System.out.println(p);
-        }
-        System.out.println();
-        for (PVector p: p2) {
-            System.out.println(p);
-        }
+        // for (PVector p: p1) {
+        //     System.out.println(p);
+        // }
+        // System.out.println();
+        // for (PVector p: p2) {
+        //     System.out.println(p);
+        // }
 
         // go through each of the vertices, plus the next
         // vertex in the list
@@ -139,7 +142,6 @@ static class PhysicsEngine {
             // stop testing (faster)
             boolean hit = checkCollisionLineLine(x1, y1, x2, y2, x3, y3, x4, y4);
             if (hit) {
-                System.out.println("Test");
                 return true;
             }
         }

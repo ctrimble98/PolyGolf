@@ -9,7 +9,7 @@ class Player extends Particle {
         this.points = points;
         this.shape = shape;
         setImage();
-        shape.addOffset(position);
+        // shape.addOffset(position);
     }
 
     public void draw() {

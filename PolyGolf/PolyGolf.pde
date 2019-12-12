@@ -52,7 +52,7 @@ void draw() {
     hole.checkCollisions(player);
     player.draw();
     drawStats();
-    System.out.println();
+    // System.out.println();
 }
 
 public void drawStats() {

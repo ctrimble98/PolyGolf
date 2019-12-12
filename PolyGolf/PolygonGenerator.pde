@@ -5,8 +5,8 @@ class PolygonGenerator {
         ArrayList<PVector> points = new ArrayList<PVector>();
         float angle = 2*PI / sides;
         for (float a = offsetAngle; a < offsetAngle + 2*PI; a += angle) {
-            float x = centre.x + cos(a) * radius;
-            float y = centre.y + sin(a) * radius;
+            float x = /*centre.x + */cos(a) * radius;
+            float y = /*centre.y + */sin(a) * radius;
             points.add(new PVector(x, y));
         }
         return new Polygon(points, centre, radius);
@@ -19,7 +19,7 @@ class PolygonGenerator {
 
         PVector bottomLeft = new PVector(topLeft.x, bottomRight.y);
         PVector topRight = new PVector(bottomRight.x, topLeft.y);
-        List<PVector> points = Arrays.asList(topLeft.copy(), bottomLeft, bottomRight.copy(), topRight);
+        List<PVector> points = Arrays.asList(topLeft.copy().sub(centre), bottomLeft.sub(centre), bottomRight.copy().sub(centre), topRight.sub(centre));
 
         return new Polygon(points, centre, boundingRadius);
     }

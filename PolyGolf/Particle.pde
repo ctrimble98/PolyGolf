@@ -12,8 +12,8 @@ abstract class Particle {
     public Particle(PVector position) {
         this.position = position;
         orientation = 0;
-        linearV = new PVector(-1, -1);
-        angularV = 0.05;
+        linearV = new PVector(-1, 0);
+        angularV = 0.00;
     }
 
     public void integrate() {

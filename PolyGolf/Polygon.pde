@@ -7,23 +7,22 @@ class Polygon extends Shape {
         this.points = points;
     }
 
-    public List<PVector> getPoints() {
+    public List<PVector> getPoints(PVector relativePos) {
+        if (relativePos != null) {
+            List<PVector> relativePoints = new ArrayList<PVector>();
+            for (PVector p: points) {
+                relativePoints.add(p.copy().add(relativePos));
+            }
+            return relativePoints;
+        }
         return points;
     }
 
     public void setImage(PGraphics pg) {
         pg.beginShape();
         for (PVector p: points) {
-            pg.vertex(p.x, p.y);
+            pg.vertex(p.x + position.x, p.y + position.y);
         }
         pg.endShape(CLOSE);
-    }
-
-    public void addOffset(PVector offset) {
-        super.addOffset(offset);
-        for (PVector p: points) {
-            p.add(offset);
-        }
-        System.out.println(offset);
     }
 }

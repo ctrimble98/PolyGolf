@@ -13,6 +13,7 @@ class Circle extends Shape {
     }
 
     public void setImage(PGraphics pg) {
-        pg.circle(position.x, position.y, boundingRadius);
+        pg.ellipseMode(CENTER);
+        pg.ellipse(position.x, position.y, boundingRadius, boundingRadius);
     }
 }
