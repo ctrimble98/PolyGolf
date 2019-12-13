@@ -44,7 +44,7 @@ void setup() {
     }
     hole = new Hole(grass, holeTiles, tileList, holeTiles[(Constants.GRID_SIZE - 1)/2][3], holeTiles[(Constants.GRID_SIZE - 1)/2][1]);
     //player = new Player(hole.getStart(), polyGen.getRegularPolygon(3, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
-    player = new Player(hole.getStart(), polyGen.getRegularStar(5, 2, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    player = new Player(hole.getStart(), polyGen.getRegularStar(3, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
 }
 
 void draw() {

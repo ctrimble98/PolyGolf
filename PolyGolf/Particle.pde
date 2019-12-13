@@ -42,8 +42,8 @@ abstract class Particle {
         updateOrientation();
     }
 
-    public void addCollision(PVector collision, PVector contactNormal) {
-        PVector contactNormal =
-        linearV.mult(linearV.copy().mult(-1).dot(position.copy().sub(collision).normalize()));
+    public void addCollision(Contact contact) {
+        // linearV.mult(linearV.copy().mult(-1).dot(position.copy().sub(collision).normalize()));
+        linearV
     }
 }
