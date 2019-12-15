@@ -1,5 +1,7 @@
 class Contact {
 
+    private Particle p1;
+    private Particle p2;
     private PVector position;
     private PVector normal;
 

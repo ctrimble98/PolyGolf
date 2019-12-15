@@ -1,8 +1,8 @@
 static class PhysicsEngine {
 
-    public static PVector checkCollision(Shape s1, Shape s2) {
+    public static Contact checkCollision(Shape s1, Shape s2) {
 
-        PVector collision = checkCollisionCircCirc(s1.getPosition(), s1.getBoundingRadius(), s2.getPosition(), s2.getBoundingRadius());
+        Contact collision = checkCollisionCircCirc(s1.getPosition(), s1.getBoundingRadius(), s2.getPosition(), s2.getBoundingRadius());
 
         if (collision != null) {
             if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.POLYGON) {
@@ -22,17 +22,17 @@ static class PhysicsEngine {
         return null;
     }
 
-    public static PVector checkCollisionCircCirc(PVector p1, float r1, PVector p2, float r2) {
+    public static Contact checkCollisionCircCirc(PVector p1, float r1, PVector p2, float r2) {
         float distBetween = p1.dist(p2);
         float minDist = r1 + r2;
         if (distBetween < minDist) {
-            return new PVector((p1.x*r2+p2.x*r1)/(r1+r2), (p1.y*r2+p2.y*r1)/(r1+r2));
+            return new Contact(new PVector((p1.x*r2+p2.x*r1)/(r1+r2), (p1.y*r2+p2.y*r1)/(r1+r2)), p2.copy().sub(p1).normalize());
         }
         return null;
     }
 
     //From http://www.jeffreythompson.org/collision-detection/poly-circle.php
-    public static PVector checkCollisionCircPoly(PVector position, float radius, List<PVector> vertices) {
+    public static Contact checkCollisionCircPoly(PVector position, float radius, List<PVector> vertices) {
 
         // go through each of the vertices, plus
         // the next vertex in the list
@@ -46,7 +46,7 @@ static class PhysicsEngine {
 
             // check for collision between the circle and
             // a line formed between the two vertices
-            PVector collision = checkCollisionCircLine(position, radius, vertices.get(i).x,vertices.get(i).y,  vertices.get(next).x, vertices.get(next).y);
+            Contact collision = checkCollisionCircLine(position, radius, vertices.get(i).x,vertices.get(i).y,  vertices.get(next).x, vertices.get(next).y);
             if (collision != null) {
                 return collision;
             }
@@ -55,7 +55,7 @@ static class PhysicsEngine {
     }
 
     // Formula from http://mathworld.wolfram.com/Circle-LineIntersection.html
-    public static PVector checkCollisionCircLine(PVector position, float radius, float v1x, float v1y, float v2x, float v2y) {
+    public static Contact checkCollisionCircLine(PVector position, float radius, float v1x, float v1y, float v2x, float v2y) {
 
         if ((((v1x < position.x && v2x < position.x) || (v1x > position.x && v2x > position.x)) && ((v1y < position.y && v2y < position.y) || (v1y > position.y && v2y > position.y)))) {
             return null;
@@ -91,26 +91,25 @@ static class PhysicsEngine {
 
             PVector p1 = new PVector((D*dy + xRoot)/dr2, (-D*dx + yRoot)/dr2);
             PVector p2 = new PVector((D*dy - xRoot)/dr2, (-D*dx - yRoot)/dr2);
+            PVector collisionPosition = position.copy().add(p1.sub(position).add(p2.sub(position)).normalize().add(radius, radius));
+
+            PVector normal = position.copy().sub(collisionPosition.copy()).normalize();
 
             //https://stackoverflow.com/questions/26951544/algorithm-find-the-midpoint-of-an-arc
-            return position.add(p1.sub(position).add(p2.sub(position)).normalize().add(radius, radius));
+            return new Contact(collisionPosition, normal);
 
         } else if (discriminant == 0) {
-            return new PVector(D*dy/dr2, -D*dx/dr2);
+            PVector collisionPosition = new PVector(D*dy/dr2, -D*dx/dr2);
+            PVector normal = position.copy().sub(collisionPosition.copy()).normalize();
+            return new Contact(collisionPosition, normal);
         }
         return null;
     }
 
     // POLYGON/POLYGON
-    public static PVector checkCollisionPolyPoly(List<PVector> p1, List<PVector> p2) {
+    public static Contact checkCollisionPolyPoly(List<PVector> p1, List<PVector> p2) {
 
-        // for (PVector p: p1) {
-        //     System.out.println(p);
-        // }
-        // System.out.println();
-        // for (PVector p: p2) {
-        //     System.out.println(p);
-        // }
+
 
         // go through each of the vertices, plus the next
         // vertex in the list
@@ -131,7 +130,7 @@ static class PhysicsEngine {
 
             // now we can use these two points (a line) to compare
             // to the other polygon's vertices using polyLine()
-            PVector collision = checkCollisionPolyLine(p2, vc.x,vc.y,vn.x,vn.y);
+            Contact collision = checkCollisionPolyLine(p2, vc.x,vc.y,vn.x,vn.y);
             if (collision != null) return collision;
 
             // // optional: check if the 2nd polygon is INSIDE the first
@@ -144,10 +143,11 @@ static class PhysicsEngine {
 
 
     // POLYGON/LINE
-    public static PVector checkCollisionPolyLine(List<PVector> vertices, float x1, float y1, float x2, float y2) {
+    public static Contact checkCollisionPolyLine(Polygon p, float x1, float y1, float x2, float y2) {
 
         // go through each of the vertices, plus the next
         // vertex in the list
+        List<PVector> vertices = p.getPoints();
         int next = 0;
         for (int current=0; current<vertices.size(); current++) {
 
@@ -166,9 +166,9 @@ static class PhysicsEngine {
             // do a Line/Line comparison
             // if true, return 'true' immediately and
             // stop testing (faster)
-            PVector hit = checkCollisionLineLine(x1, y1, x2, y2, x3, y3, x4, y4);
-            if (hit != null) {
-                return hit;
+            PVector collisionPosition = checkCollisionLineLine(x1, y1, x2, y2, x3, y3, x4, y4);
+            if (collisionPosition != null) {
+                return new Contact(collisionPosition, );
             }
         }
 
@@ -191,6 +191,49 @@ static class PhysicsEngine {
             return new PVector(intersectionX, intersectionY);
         }
         return null;
+    }
+
+    public static PVector checkCollisionPolyPoint(Polygon p, float x, float y) {
+
+        List<PVector> vertices = p.getPoints();
+        int next = 0;
+        float minPenDepth = displayWidth;
+        Contact c = null;
+        for (int current=0; current<vertices.size(); current++) {
+
+            // get next vertex in list
+            // if we've hit the end, wrap around to 0
+            next = current+1;
+            if (next == vertices.size()) next = 0;
+
+            // get the PVectors at our current position
+            // extract X/Y coordinates from each
+            float x1 = vertices.get(current).x;
+            float y1 = vertices.get(current).y;
+            float x2 = vertices.get(next).x;
+            float y2 = vertices.get(next).y;
+
+            float xDiff = x2 - x1;
+            float yDiff = y2 - y1;
+
+            // do a Line/Line comparison
+            // if true, return 'true' immediately and
+            // stop testing (faster)
+
+            //Check if center of polygon is on same side of line as the  point to know if point is inside polygon
+            // https://math.stackexchange.com/questions/162728/how-to-determine-if-2-points-are-on-opposite-sides-of-a-line
+            if ((-yDiff*(x - x1) + xDiff*(y - y1))*(-yDiff*(p.getPosition().x - x1) + xDiff*(p.getPosition().y - y1)) >= 0) {
+
+                float lineLen = sqrt(sq(yDiff) + sq(xDiff));
+                float penDepth = abs(yDiff*x - xDiff*y + x2*y1 - y2*x1)/lineLen;
+
+                if (penDepth < minPenDepth) {
+                    minPenDepth = penDepth;
+                    c = new Contact(new PVector(x, y), new PVector(-yDiff,xDiff));
+                }
+            }
+        }
+        return c;
     }
 
     public static int sign(float x) {
