@@ -13,7 +13,7 @@ abstract class Particle {
         this.position = position;
     }
 
-    public Particle(PVector position) {
+    public Particle(PVector position, float invMass) {
         this.position = position;
         orientation = 0;
         linearV = new PVector(-0.5, -0.5);

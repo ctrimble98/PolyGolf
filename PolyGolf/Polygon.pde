@@ -1,27 +1,27 @@
 class Polygon extends Shape {
 
-    private List<PVector> points;
+    private List<PVector> vertices;
 
-    public Polygon(List<PVector> points, PVector centre, float boundingRadius) {
+    public Polygon(List<PVector> vertices, PVector centre, float boundingRadius) {
         super(ShapeType.POLYGON, centre, boundingRadius);
-        this.points = points;
+        this.vertices = vertices;
     }
 
-    public List<PVector> getPoints(PVector relativePos) {
+    public List<PVector> getVertices(PVector relativePos) {
         if (relativePos != null) {
-            List<PVector> relativePoints = new ArrayList<PVector>();
-            for (PVector p: points) {
-                relativePoints.add(p.copy().add(relativePos));
+            List<PVector> relativeVertices = new ArrayList<PVector>();
+            for (PVector v: vertices) {
+                relativeVertices.add(v.copy().add(relativePos));
             }
-            return relativePoints;
+            return relativeVertices;
         }
         return points;
     }
 
     public void setImage(PGraphics pg) {
         pg.beginShape();
-        for (PVector p: points) {
-            pg.vertex(p.x + position.x, p.y + position.y);
+        for (PVector v: vertices) {
+            pg.vertex(v.x + position.x, v.y + position.y);
         }
         pg.endShape(CLOSE);
     }

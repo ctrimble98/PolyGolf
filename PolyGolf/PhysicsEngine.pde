@@ -7,13 +7,13 @@ static class PhysicsEngine {
         if (collision != null) {
             if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.POLYGON) {
                 PVector relPos = s2.getPosition().copy().sub(s1.getPosition());
-                return checkCollisionPolyPoly(((Polygon)s1).getPoints(null), ((Polygon)s2).getPoints(relPos));
+                return checkCollisionPolyPoly(((Polygon)s1).getVertices(null), ((Polygon)s2).getVertices(relPos));
             } else if (s1.getType() == ShapeType.CIRCLE && s2.getType() == ShapeType.POLYGON) {
                 PVector relPos = s2.getPosition().copy().sub(s1.getPosition());
-                return checkCollisionCircPoly(s1.getPosition(), s1.getBoundingRadius(), ((Polygon)s2).getPoints(relPos));
+                return checkCollisionCircPoly(s1.getPosition(), s1.getBoundingRadius(), ((Polygon)s2).getVertices(relPos));
             } else if (s1.getType() == ShapeType.POLYGON && s2.getType() == ShapeType.CIRCLE) {
                 PVector relPos = s1.getPosition().copy().sub(s2.getPosition());
-                return checkCollisionCircPoly(s2.getPosition(), s2.getBoundingRadius(), ((Polygon)s1).getPoints(relPos));
+                return checkCollisionCircPoly(s2.getPosition(), s2.getBoundingRadius(), ((Polygon)s1).getVertices(relPos));
             } else {
                 //Both shapes were circles
                 return collision;
@@ -141,13 +141,42 @@ static class PhysicsEngine {
         return null;
     }
 
+    // POLYGON/POLYGON
+    public static Contact checkCollisionPolyPoly(Polygon p1, Polygon p2) {
+
+        PVector relPos = s2.getPosition().copy().sub(s1.getPosition();
+
+        List<PVector> v1 = p1.getVertices(null);
+        List<PVector> v2 = p2.getVertices(relPos);
+
+        List<Contact> contacts = new ArrayList<Contact>();
+
+        //Get the contacts between the vertices of p1 and the edges of p2 relative to p1
+        for (PVector p: v1) {
+            Contact c = checkCollisionPolyPoint(p2, p.x, p.y);
+            if (c != null) {
+                contacts.add(c);
+            }
+        }
+
+        //Get the contacts between the vertices of p2 and the edges of p1 relative to p1
+        for (PVector p: v2) {
+            Contact c = checkCollisionPolyPoint(p1, p.x, p.y);
+            if (c != null) {
+                contacts.add(c);
+            }
+        }
+
+        return null;
+    }
+
 
     // POLYGON/LINE
     public static Contact checkCollisionPolyLine(Polygon p, float x1, float y1, float x2, float y2) {
 
         // go through each of the vertices, plus the next
         // vertex in the list
-        List<PVector> vertices = p.getPoints();
+        List<PVector> vertices = p.getVertices();
         int next = 0;
         for (int current=0; current<vertices.size(); current++) {
 
@@ -193,9 +222,9 @@ static class PhysicsEngine {
         return null;
     }
 
-    public static PVector checkCollisionPolyPoint(Polygon p, float x, float y) {
+    public static Contact checkCollisionPolyPoint(Polygon p, float x, float y) {
 
-        List<PVector> vertices = p.getPoints();
+        List<PVector> vertices = p.getVertices();
         int next = 0;
         float minPenDepth = displayWidth;
         Contact c = null;
@@ -216,10 +245,6 @@ static class PhysicsEngine {
             float xDiff = x2 - x1;
             float yDiff = y2 - y1;
 
-            // do a Line/Line comparison
-            // if true, return 'true' immediately and
-            // stop testing (faster)
-
             //Check if center of polygon is on same side of line as the  point to know if point is inside polygon
             // https://math.stackexchange.com/questions/162728/how-to-determine-if-2-points-are-on-opposite-sides-of-a-line
             if ((-yDiff*(x - x1) + xDiff*(y - y1))*(-yDiff*(p.getPosition().x - x1) + xDiff*(p.getPosition().y - y1)) >= 0) {
@@ -229,7 +254,7 @@ static class PhysicsEngine {
 
                 if (penDepth < minPenDepth) {
                     minPenDepth = penDepth;
-                    c = new Contact(new PVector(x, y), new PVector(-yDiff,xDiff));
+                    c = new Contact(new PVector(x, y), new PVector(-yDiff,xDiff), penDepth);
                 }
             }
         }

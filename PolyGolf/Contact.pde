@@ -5,7 +5,7 @@ class Contact {
     private PVector position;
     private PVector normal;
 
-    public Contact(PVector position, PVector normal) {
+    public Contact(PVector position, PVector normal, float penDepth) {
         this.position = position;
         this.normal = normal;
     }

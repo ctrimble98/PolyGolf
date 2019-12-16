@@ -4,7 +4,7 @@ class Player extends Particle {
     private Shape shape;
 
     public Player(PVector start, Shape shape) {
-        super(start);
+        super(start, Constants.PLAYER_INV_MASS);
         this.shape = shape;
         setImage();
         // shape.addOffset(position);

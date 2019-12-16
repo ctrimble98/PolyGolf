@@ -4,4 +4,5 @@ final class Constants {
     final static int GRID_SIZE = 5;
     final static int HOLE_RADIUS = 30;
     final static int PLAYER_RADIUS = 20;
+    final static float PLAYER_INV_MASS = 0.005;
 }
