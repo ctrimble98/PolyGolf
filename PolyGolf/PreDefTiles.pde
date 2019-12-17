@@ -1,14 +1,14 @@
 class PreDefTiles {
 
     public Tile getBasicStart() {
-        return new Tile(new boolean[]{true, true, false, true}, new ArrayList<Shape>());
+        return new Tile(new boolean[]{true, true, false, true}, new ArrayList<Particle>());
     }
 
     public Tile getBasicEnd() {
-        return new Tile(new boolean[]{false, true, true, true}, new ArrayList<Shape>());
+        return new Tile(new boolean[]{false, true, true, true}, new ArrayList<Particle>());
     }
 
     public Tile getEmptyVerticalCorridor() {
-        return new Tile(new boolean[]{false, true, false, true}, new ArrayList<Shape>());
+        return new Tile(new boolean[]{false, true, false, true}, new ArrayList<Particle>());
     }
 }

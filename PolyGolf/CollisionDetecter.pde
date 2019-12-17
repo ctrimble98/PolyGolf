@@ -1,4 +1,4 @@
-static class PhysicsEngine {
+class CollisionDetector {
 
     public static Contact checkCollision(Particle p1, Particle p2) {
 

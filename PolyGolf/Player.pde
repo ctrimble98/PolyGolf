@@ -1,10 +1,9 @@
 class Player extends Particle {
 
     private PGraphics pg;
-    private Shape shape;
 
     public Player(PVector start, Shape shape) {
-        super(start, Constants.PLAYER_INV_MASS);
+        super(start, Constants.PLAYER_INV_MASS, shape);
         this.shape = shape;
         setImage();
         // shape.addOffset(position);
@@ -27,9 +26,5 @@ class Player extends Particle {
         pg.noStroke();
         shape.setImage(pg);
         pg.endDraw();
-    }
-
-    public Shape getShape() {
-        return shape;
     }
 }

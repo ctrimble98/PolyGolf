@@ -2,6 +2,7 @@ import java.util.*;
 
 PreDefTiles tiles;
 PolygonGenerator polyGen;
+CollisionDetector collisionDetect;
 
 final color PLAYER_COLOUR = color(255);
 
@@ -22,6 +23,7 @@ public void settings(){
 void setup() {
     tiles = new PreDefTiles();
     polyGen = new PolygonGenerator();
+    collisionDetect = new CollisionDetector();
 
     Tile[][] holeTiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
 
@@ -53,7 +55,6 @@ void draw() {
     player.draw();
     hole.checkCollisions(player);
     drawStats();
-    // System.out.println();
 }
 
 public void drawStats() {

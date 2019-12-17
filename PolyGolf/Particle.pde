@@ -3,6 +3,7 @@ abstract class Particle {
     protected PVector position;
     private PVector linearV;
     protected float orientation, angularV;
+    protected Shape shape;
     private float mass, invMass;
 
     public PVector getPosition() {
@@ -13,8 +14,10 @@ abstract class Particle {
         this.position = position;
     }
 
-    public Particle(PVector position, float invMass) {
+    public Particle(PVector position, float invMass, Shape shape) {
         this.position = position;
+        this.invMass = invMass;
+        this.shape = shape;
         orientation = 0;
         linearV = new PVector(-0.5, -0.5);
         angularV = 0.05;
@@ -42,8 +45,7 @@ abstract class Particle {
         updateOrientation();
     }
 
-    public void addCollision(Contact contact) {
-        // linearV.mult(linearV.copy().mult(-1).dot(position.copy().sub(collision).normalize()));
-        linearV
+    public Shape getShape() {
+        return shape;
     }
 }
