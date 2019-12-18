@@ -21,4 +21,9 @@ class Contact {
     public PVector getNormal() {
         return normal;
     }
+
+    void draw() {
+        fill(255);
+        ellipse(p1.getPosition().x + position.x, p1.getPosition().y + position.y, 5, 5);
+    }
 }

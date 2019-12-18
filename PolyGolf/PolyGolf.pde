@@ -58,6 +58,10 @@ void draw() {
     player.update();
     player.draw();
     hole.checkCollisions(player);
+    for (Contact c: contacts) {
+        c.draw();
+    }
+    contacts = new ArrayList<Contact>();
     drawStats();
 }
 

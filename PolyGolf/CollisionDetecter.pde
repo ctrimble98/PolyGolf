@@ -164,7 +164,7 @@ class CollisionDetector {
 
         //Get the contacts between the vertices of p1 and the edges of p2 relative to p1
         for (PVector p: v1) {
-            Contact c = checkCollisionPolyPoint(poly2, p.x, p.y, relPos);
+            Contact c = checkContactPolyPoint(poly2, p.x, p.y, relPos);
             if (c != null) {
                 contacts.add(c);
             }
@@ -172,11 +172,26 @@ class CollisionDetector {
 
         //Get the contacts between the vertices of p2 and the edges of p1 relative to p1
         for (PVector p: v2) {
-            Contact c = checkCollisionPolyPoint(poly1, p.x, p.y, relPos);
+            Contact c = checkContactPolyPoint(poly1, p.x, p.y, relPos);
             if (c != null) {
                 contacts.add(c);
             }
         }
+
+
+        // Contact c = checkContactPolyPoint(poly2, v1.get(0).x, v1.get(0).y, relPos);
+        // if (c != null) {
+        //     contacts.add(c);
+        // }
+        //
+        // System.out.println(v1.get(0));
+        // System.out.println(v2.get(0));
+        // System.out.println();
+        //
+        // c = checkContactPolyPoint(poly1, v2.get(0).x, v2.get(0).y, relPos);
+        // if (c != null) {
+        //     contacts.add(c);
+        // }
     }
 
 
@@ -231,17 +246,22 @@ class CollisionDetector {
         return null;
     }
 
-    public Contact checkCollisionPolyPoint(Polygon p, float x, float y, PVector relPos) {
+    public Contact checkContactPolyPoint(Polygon p, float x, float y, PVector relPos) {
 
         List<PVector> vertices = p.getVertices(relPos);
         int next = 0;
         float minPenDepth = displayWidth;
         Contact c = null;
-        for (int current=0; current<vertices.size(); current++) {
+
+        if (!checkCollisionPolyPoint(vertices, x, y)) {
+            return null;
+        }
+
+        for (int current = 0; current<vertices.size(); current++) {
 
             // get next vertex in list
             // if we've hit the end, wrap around to 0
-            next = current+1;
+            next = current + 1;
             if (next == vertices.size()) next = 0;
 
             // get the PVectors at our current position
@@ -265,9 +285,34 @@ class CollisionDetector {
                     minPenDepth = penDepth;
                     c = new Contact(p1, p2, new PVector(x, y), new PVector(-yDiff,xDiff), penDepth);
                 }
+
+                stroke(255, 0, 0);
+                strokeWeight(2);
+                line(x1 + relPos.x,  y1 + relPos.y, x2 + relPos.x, y2 + relPos.y);
             }
         }
         return c;
+    }
+
+    //POLYGON/POINT
+    public boolean checkCollisionPolyPoint(List<PVector> vertices, float x, float y) {
+
+        boolean collision = false;
+        for (int current = 0; current<vertices.size(); current++) {
+
+            // get next vertex in list
+            // if we've hit the end, wrap around to 0
+            int next = current + 1;
+            if (next == vertices.size()) next = 0;
+
+            PVector vc = vertices.get(current);
+            PVector vn = vertices.get(next);
+            if (((vc.y >= y && vn.y < y) || (vc.y < y && vn.y >= y)) &&  (x < (vn.x-vc.x)*(y-vc.y) / (vn.y-vc.y)+vc.x)) {
+                collision = !collision;
+            }
+        }
+
+        return collision;
     }
 
     public int sign(float x) {

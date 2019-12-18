@@ -43,6 +43,7 @@ class Particle {
     public void update() {
         integrate();
         updateOrientation();
+        shape.setPosition(position);
     }
 
     public Shape getShape() {
