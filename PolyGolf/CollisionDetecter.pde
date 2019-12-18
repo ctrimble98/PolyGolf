@@ -38,7 +38,7 @@ class CollisionDetector {
         float distBetween = p1.dist(p2);
         float minDist = r1 + r2;
         if (distBetween < minDist) {
-            if (bounding) {
+            if (!bounding) {
                 addContact(new PVector((p1.x*r2+p2.x*r1)/(r1+r2), (p1.y*r2+p2.y*r1)/(r1+r2)), p2.copy().sub(p1).normalize(), minDist - distBetween);
             }
             return true;

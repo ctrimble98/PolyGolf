@@ -58,6 +58,8 @@ void draw() {
     player.update();
     player.draw();
     hole.checkCollisions(player);
+    System.out.println(1);
+    System.out.println(contacts.size());
     for (Contact c: contacts) {
         c.draw();
     }

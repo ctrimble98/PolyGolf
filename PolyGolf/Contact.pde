@@ -25,5 +25,14 @@ class Contact {
     void draw() {
         fill(255);
         ellipse(p1.getPosition().x + position.x, p1.getPosition().y + position.y, 5, 5);
+        System.out.println(p1.getLinearVel());
+        p1.getPosition().add(normal.copy().add(penDepth, penDepth));
+        p1.getLinearVel().mult(-1);
+        System.out.println(p1.getLinearVel());
+        System.out.println(p1.getPosition());
+        System.out.println(position);
+        System.out.println(p2.getPosition());
+
+        System.out.println();
     }
 }

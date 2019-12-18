@@ -14,6 +14,14 @@ class Particle {
         this.position = position;
     }
 
+    public PVector getLinearVel() {
+        return linearV;
+    }
+
+    public void setLinearVel(PVector linearV) {
+        this.linearV = linearV;
+    }
+
     public Particle(PVector position, float invMass, Shape shape) {
         this.position = position;
         this.invMass = invMass;
