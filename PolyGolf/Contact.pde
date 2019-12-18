@@ -28,11 +28,11 @@ class Contact {
         System.out.println(p1.getLinearVel());
         p1.getPosition().add(normal.copy().mult(penDepth));
         p1.getLinearVel().mult(-1);
-        System.out.println(p1.getLinearVel());
-        System.out.println(p1.getPosition());
-        System.out.println(position);
+        // System.out.println(p1.getLinearVel());
+        // System.out.println(p1.getPosition());
+        // System.out.println(position);
         System.out.println(penDepth);
-        System.out.println(p2.getPosition());
+        // System.out.println(p2.getPosition());
 
         System.out.println();
     }

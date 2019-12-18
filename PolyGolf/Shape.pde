@@ -2,12 +2,14 @@ abstract class Shape {
 
     private ShapeType type;
     protected PVector position;
+    protected float orientation;
     protected float boundingRadius;
 
     public Shape(ShapeType type, PVector position, float boundingRadius) {
         this.type = type;
         this.position = position;
         this.boundingRadius = boundingRadius;
+        orientation = 0;
     }
 
     public ShapeType getType() {
@@ -31,4 +33,9 @@ abstract class Shape {
     }
 
     public abstract void setImage(PGraphics pg);
+
+    public void update(PVector position, float orientation) {
+        this.position = position;
+        this.orientation = orientation;
+    }
 }

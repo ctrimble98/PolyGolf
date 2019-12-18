@@ -274,24 +274,41 @@ class CollisionDetector {
             float xDiff = x2 - x1;
             float yDiff = y2 - y1;
 
+            // System.out.println(xDiff);
+            // System.out.println(yDiff);
+            // System.out.println(x1 + " " + y1);
+            // System.out.println(x2 + " " + y2);
+            // System.out.println(x + " " + y);
+
             //Check if center of polygon is on same side of line as the  point to know if point is inside polygon
             // https://math.stackexchange.com/questions/162728/how-to-determine-if-2-points-are-on-opposite-sides-of-a-line
-            if ((-yDiff*(x - x1) + xDiff*(y - y1))*(-yDiff*(p.getPosition().x - x1) + xDiff*(p.getPosition().y - y1)) >= 0) {
+            // if ((-yDiff*(x - x1) + xDiff*(y - y1))*(-yDiff*(p.getPosition().x - x1) + xDiff*(p.getPosition().y - y1)) >= 0) {
 
-                float lineLen = sqrt(sq(yDiff) + sq(xDiff));
-                float penDepth = abs(yDiff*x - xDiff*y + x2*y1 - y2*x1)/lineLen;
+            float lineLen = sqrt(sq(yDiff) + sq(xDiff));
+            float penDepth = abs(yDiff*x - xDiff*y + x2*y1 - y2*x1)/lineLen;
+            // System.out.println(xDiff);
+            // System.out.println(yDiff);
+            // System.out.println(x1 + " " + y1);
+            // System.out.println(x2 + " " + y2);
+            // System.out.println(x + " " + y);
+            // System.out.println(lineLen);
+            // System.out.println(penDepth);
 
-                if (penDepth < minPenDepth) {
-                    minPenDepth = penDepth;
-                    PVector normal = new PVector(yDiff,-xDiff);
-                    normal.normalize();
-                    c = new Contact(p1, p2, new PVector(x, y), normal, penDepth);
+            if (penDepth < minPenDepth) {
+                minPenDepth = penDepth;
+                PVector normal = new PVector(yDiff,-xDiff);
+                if (normal.dot(relPos) > 0) {
+                    normal.mult(-1);
                 }
-
-                stroke(255, 0, 0);
-                strokeWeight(2);
-                line(x1 + relPos.x,  y1 + relPos.y, x2 + relPos.x, y2 + relPos.y);
+                normal.normalize();
+                System.out.println(normal);
+                c = new Contact(p1, p2, new PVector(x, y), normal, penDepth);
             }
+
+            stroke(255, 0, 0);
+            strokeWeight(2);
+            line(x1 + relPos.x,  y1 + relPos.y, x2 + relPos.x, y2 + relPos.y);
+            System.out.println();
         }
         return c;
     }

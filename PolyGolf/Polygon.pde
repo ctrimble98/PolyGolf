@@ -8,14 +8,14 @@ class Polygon extends Shape {
     }
 
     public List<PVector> getVertices(PVector relativePos) {
-        if (relativePos != null) {
-            List<PVector> relativeVertices = new ArrayList<PVector>();
-            for (PVector v: vertices) {
-                relativeVertices.add(v.copy().add(relativePos));
-            }
-            return relativeVertices;
+        if (relativePos == null) {
+            relativePos = new PVector(0, 0);
         }
-        return vertices;
+        List<PVector> relativeVertices = new ArrayList<PVector>();
+        for (PVector v: vertices) {
+            relativeVertices.add(v.copy().rotate(orientation).add(relativePos));
+        }
+        return relativeVertices;
     }
 
     public void setImage(PGraphics pg) {
