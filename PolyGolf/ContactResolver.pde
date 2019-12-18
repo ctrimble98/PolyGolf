@@ -5,7 +5,7 @@ class ContactResolver {
     Iterator itr = contacts.iterator();
     while(itr.hasNext()) {
       Contact contact = (Contact)itr.next();
-      contact.resolve();
+      //contact.resolve();
     }
   }
 }

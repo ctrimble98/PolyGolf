@@ -14,11 +14,9 @@ class Tile {
     private void addBorders(boolean[] borders) {
         for (int i = 0; i < 4; i++) {
             if (borders[i]) {
-                Shape s;
+                // Case 0 to stop compiler error for uninstantiated s
+                Shape s = polyGen.getRectangle(new PVector(0, Constants.TILE_SIZE), new PVector(Constants.TILE_SIZE, Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH));
                 switch (i) {
-                    case 0:
-                        s = polyGen.getRectangle(new PVector(0, Constants.TILE_SIZE), new PVector(Constants.TILE_SIZE, Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH));
-                        break;
                     case 1:
                         s = polyGen.getRectangle(new PVector(0, 0), new PVector(Constants.HOLE_BORDER_WIDTH, Constants.TILE_SIZE));
                         break;
@@ -63,9 +61,9 @@ class Tile {
         pg.fill(environment.getGroundColour());
         pg.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
         pg.fill(environment.getObstacleColour());
-        for (Shape o: obstacles) {
-            o.setImage(pg);
-            o.addOffset(position);
+        for (Particle o: obstacles) {
+            o.getShape().setImage(pg);
+            o.getShape().addOffset(position);
         }
         pg.endDraw();
     }
@@ -74,13 +72,12 @@ class Tile {
         fill(0, 255, 0);
         circle(player.getPosition().x, player.getPosition().y, 10);
         for (Particle o: obstacles) {
-            PVector collision = PhysicsEngine.checkCollision(player, o);
-            if (collision != null) {
-                noStroke();
-                fill(255, 0, 0);
-                circle(collision.x + player.getPosition().x, collision.y + player.getPosition().y, 10);
-                player.addCollision(collision);
-            }
+            collisionDetect.checkCollision(player, o);
+            //if (collision != null) {
+            //    noStroke();
+            //    fill(255, 0, 0);
+            //    circle(collision.x + player.getPosition().x, collision.y + player.getPosition().y, 10);
+            //}
         }
     }
 }

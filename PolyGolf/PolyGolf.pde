@@ -4,6 +4,8 @@ PreDefTiles tiles;
 PolygonGenerator polyGen;
 CollisionDetector collisionDetect;
 
+List<Contact> contacts;
+
 final color PLAYER_COLOUR = color(255);
 
 PVector offset;
@@ -24,6 +26,8 @@ void setup() {
     tiles = new PreDefTiles();
     polyGen = new PolygonGenerator();
     collisionDetect = new CollisionDetector();
+
+    contacts = new ArrayList<Contact>();
 
     Tile[][] holeTiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
 

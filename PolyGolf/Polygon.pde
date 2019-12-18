@@ -15,7 +15,7 @@ class Polygon extends Shape {
             }
             return relativeVertices;
         }
-        return points;
+        return vertices;
     }
 
     public void setImage(PGraphics pg) {

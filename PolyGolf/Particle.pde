@@ -1,4 +1,4 @@
-abstract class Particle {
+class Particle {
 
     protected PVector position;
     private PVector linearV;
