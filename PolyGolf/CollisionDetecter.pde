@@ -283,7 +283,9 @@ class CollisionDetector {
 
                 if (penDepth < minPenDepth) {
                     minPenDepth = penDepth;
-                    c = new Contact(p1, p2, new PVector(x, y), new PVector(-yDiff,xDiff), penDepth);
+                    PVector normal = new PVector(yDiff,-xDiff);
+                    normal.normalize();
+                    c = new Contact(p1, p2, new PVector(x, y), normal, penDepth);
                 }
 
                 stroke(255, 0, 0);
