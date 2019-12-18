@@ -27,7 +27,7 @@ class Tile {
                         s = polyGen.getRectangle(new PVector(Constants.TILE_SIZE, 0), new PVector(Constants.TILE_SIZE - Constants.HOLE_BORDER_WIDTH, Constants.TILE_SIZE));
                         break;
                 }
-                obstacles.add(new Particle(s.getPosition(), 0, s));
+                obstacles.add(new Particle(s.getPosition(), new PVector(0, 0), new PVector(0, 0, 0), 0, s));
             }
         }
     }

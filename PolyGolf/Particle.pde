@@ -1,8 +1,8 @@
 class Particle {
 
     protected PVector position;
-    private PVector linearV;
-    protected float orientation, angularV;
+    private PVector linearV, linearA;
+    protected PVector orientation, angularV, angularA;
     protected Shape shape;
     private float mass, invMass;
 
@@ -22,36 +22,59 @@ class Particle {
         this.linearV = linearV;
     }
 
-    public Particle(PVector position, float invMass, Shape shape) {
+    public PVector getAngularVel() {
+        return angularV;
+    }
+
+    public void setAngularVel(PVector AngularV) {
+        this.angularV = AngularV;
+    }
+
+    public float getInvMass() {
+        return invMass;
+    }
+
+    public float getMass() {
+        return mass;
+    }
+
+    public Particle(PVector position, PVector linearV, PVector angularV, float invMass, Shape shape) {
         this.position = position;
+        this.linearV = linearV;
+        this.angularV = angularV;
         this.invMass = invMass;
         this.shape = shape;
-        orientation = 0;
-        linearV = new PVector(-0.5, -0.5);
-        angularV = 0.05;
+        orientation = new PVector(0, 0, 0);
+        linearA = new PVector(0, 0);
+        angularA = new PVector(0, 0, 0);
     }
 
     public void integrate() {
+
+
+        linearV.mult(Constants.LINEAR_DAMPING_FACTOR);
+        angularV.mult(Constants.ANGULAR_DAMPING_FACTOR);
+
         position.add(linearV);
     }
 
     //Taken from example from lectures
     protected void updateOrientation() {
 
-        orientation += angularV;
+        orientation.add(angularV);
 
         // Keep in bounds
-        if (orientation > PI) {
-            orientation -= 2*PI;
-        } else if (orientation < -PI) {
-            orientation += 2*PI;
+        if (orientation.z > PI) {
+            orientation.z -= 2*PI;
+        } else if (orientation.z < -PI) {
+            orientation.z += 2*PI;
         }
     }
 
     public void update() {
         integrate();
         updateOrientation();
-        shape.update(position, orientation);
+        shape.update(position, orientation.z);
     }
 
     public Shape getShape() {

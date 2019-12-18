@@ -301,7 +301,7 @@ class CollisionDetector {
                     normal.mult(-1);
                 }
                 normal.normalize();
-                System.out.println(normal);
+                // System.out.println(normal);
                 c = new Contact(p1, p2, new PVector(x, y), normal, penDepth);
             }
 

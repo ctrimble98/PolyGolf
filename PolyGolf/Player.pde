@@ -3,7 +3,7 @@ class Player extends Particle {
     private PGraphics pg;
 
     public Player(PVector start, Shape shape) {
-        super(start, Constants.PLAYER_INV_MASS, shape);
+        super(start, new PVector(-0.5, -0.5), new PVector(0, 0, 0.05), Constants.PLAYER_INV_MASS, shape);
         this.shape = shape;
         setImage();
         // shape.addOffset(position);
@@ -13,7 +13,7 @@ class Player extends Particle {
         shape.setPosition(position);
         pushMatrix();
         translate(position.x, position.y);
-        rotate(orientation);
+        rotate(orientation.z);
         imageMode(CENTER);
         image(pg, 0, 0);
         popMatrix();

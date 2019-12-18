@@ -3,6 +3,7 @@ import java.util.*;
 PreDefTiles tiles;
 PolygonGenerator polyGen;
 CollisionDetector collisionDetect;
+ContactResolver contactResolver;
 
 List<Contact> contacts;
 
@@ -26,6 +27,7 @@ void setup() {
     tiles = new PreDefTiles();
     polyGen = new PolygonGenerator();
     collisionDetect = new CollisionDetector();
+    contactResolver = new ContactResolver();
 
     contacts = new ArrayList<Contact>();
 
@@ -50,7 +52,7 @@ void setup() {
     }
     hole = new Hole(grass, holeTiles, tileList, holeTiles[(Constants.GRID_SIZE - 1)/2][3], holeTiles[(Constants.GRID_SIZE - 1)/2][1]);
     //player = new Player(hole.getStart(), polyGen.getRegularPolygon(3, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
-    player = new Player(hole.getStart(), polyGen.getRegularStar(3, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    player = new Player(hole.getStart(), polyGen.getRegularStar(5, 2, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
 }
 
 void draw() {
@@ -58,13 +60,7 @@ void draw() {
     player.update();
     player.draw();
     hole.checkCollisions(player);
-    for (Contact c: contacts) {
-        c.draw();
-    }
-    // if (contacts.size() > 0) {
-    //     while(true);
-    // }
-    contacts = new ArrayList<Contact>();
+    contactResolver.resolveContacts();
     drawStats();
 }
 
