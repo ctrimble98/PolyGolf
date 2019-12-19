@@ -5,6 +5,11 @@ class Polygon extends Shape {
     public Polygon(List<PVector> vertices, PVector centre, float boundingRadius) {
         super(ShapeType.POLYGON, centre, boundingRadius);
         this.vertices = vertices;
+        if (vertices.size = 4) {
+            inertia = (1/12)*(sq(vertices.get(0).dist(vertices.get(1))) + sq(vertices.get(0).dist(vertices.get(1))));
+        } else {
+            inertia = 0.5 * sq(boundingRadius);
+        }
     }
 
     public List<PVector> getVertices(PVector relativePos) {

@@ -47,6 +47,9 @@ class Particle {
         orientation = new PVector(0, 0, 0);
         linearA = new PVector(0, 0);
         angularA = new PVector(0, 0, 0);
+        if (invMass > 0) {
+            mass = 1/invMass;
+        }
     }
 
     public void integrate() {
@@ -79,5 +82,13 @@ class Particle {
 
     public Shape getShape() {
         return shape;
+    }
+
+    public float getInertia() {
+        if (invMass > 0) {
+            return shape.getInertia()*mass;
+        } else {
+
+        }
     }
 }

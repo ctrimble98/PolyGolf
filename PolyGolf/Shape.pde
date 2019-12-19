@@ -4,6 +4,7 @@ abstract class Shape {
     protected PVector position;
     protected float orientation;
     protected float boundingRadius;
+    protected float inertia;
 
     public Shape(ShapeType type, PVector position, float boundingRadius) {
         this.type = type;
@@ -26,6 +27,10 @@ abstract class Shape {
 
     public float getBoundingRadius() {
         return boundingRadius;
+    }
+
+    public float getInertia() {
+        return inertia;
     }
 
     public void addOffset(PVector offset) {

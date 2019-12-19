@@ -44,16 +44,17 @@ class Contact {
 
     private void resolveVelocity() {
 
+        //The position of the contact in relatiopn to p2
+        PVector position2 = p1.getPosition().copy().sub(p2.getPosition()).add(position);
+
         // PVector relPos1 = position.copy().sub(p1.getPosition());
         PVector contactVelocity = p1.getLinearVel();
         contactVelocity.add(p1.getAngularVel().copy().cross(position));
 
-        //The position of the contact in relatiopn to p2
-        PVector position2 = p1.getPosition().copy().sub(p2.getPosition()).add(position);
         contactVelocity.add(p2.getLinearVel());
         contactVelocity.add(p2.getAngularVel().copy().cross(position2));
 
-        float deltaVelocity = -contactVelocity.x * (1 + Constants.COEFF_OF_RESTITUTION);
+        float desiredChangeVelocity = -contactVelocity.x * (1 + Constants.COEFF_OF_RESTITUTION);
 
         float relativeVelocity = p1.getLinearVel().copy().sub(p2.getLinearVel()).dot(normal);
         float sepVelocity = -1*relativeVelocity*Constants.COEFF_OF_RESTITUTION;
@@ -76,30 +77,40 @@ class Contact {
 
     private void resolveAngular() {
 
-        PVector relPos = position.copy().sub(p1.getPosition());
+        // PVector relPos = position.copy().sub(p1.getPosition());
 
         //Only look at z axis since in 2d only spinning about this axis
-        float impulsiveTorquePerImpulse = relPos.copy().cross(normal).z;
-        float angularChangeperImpulse = sq(relPos.mag())*(impulsiveTorquePerImpulse);
 
-
-        float relativeVelocity = p1.getLinearVel().copy().sub(p2.getLinearVel()).dot(normal);
-        float sepVelocity = -1*relativeVelocity*Constants.COEFF_OF_RESTITUTION;
-
-        float changeVelocity = sepVelocity - relativeVelocity;
-
-        float invM1 = p1.getInvMass();
-        float invM2 = p2.getInvMass();
-
-        float totalInvMass = invM1 + invM2;
-        if (totalInvMass <= 0) {
-            return;
+        if (p1.getInvMass() > 0) {
+            PVector impulsiveTorquePerImpulse = position.copy().cross(normal);
+            PVector angularChangeperImpulse = impulsiveTorquePerImpulse.mult(p1.getInertia()*(position.mag()));
+            PVector velocityPerImpulse = angularChangeperImpulse.cross(position);
         }
 
-        PVector impulsePerInvMass = normal.copy().mult(changeVelocity/totalInvMass);
+        if (p2.getInvMass() > 0) {
+            PVector position2 = p1.getPosition().copy().sub(p2.getPosition()).add(position);
+            PVector impulsiveTorquePerImpulse = position2.copy().cross(normal);
+            PVector angularChangeperImpulse = impulsiveTorquePerImpulse.mult(p2.getInertia()*(position.mag()));
+            PVector velocityPerImpulse = angularChangeperImpulse.cross(position2);
+        }
 
-        p1.setLinearVel(p1.getLinearVel().add(impulsePerInvMass.copy().mult(invM1)));
-        p2.setLinearVel(p2.getLinearVel().add(impulsePerInvMass.copy().mult(-1*invM2)));
+        // float relativeVelocity = p1.getLinearVel().copy().sub(p2.getLinearVel()).dot(normal);
+        // float sepVelocity = -1*relativeVelocity*Constants.COEFF_OF_RESTITUTION;
+        //
+        // float changeVelocity = sepVelocity - relativeVelocity;
+        //
+        // float invM1 = p1.getInvMass();
+        // float invM2 = p2.getInvMass();
+        //
+        // float totalInvMass = invM1 + invM2;
+        // if (totalInvMass <= 0) {
+        //     return;
+        // }
+        //
+        // PVector impulsePerInvMass = normal.copy().mult(changeVelocity/totalInvMass);
+        //
+        // p1.setLinearVel(p1.getLinearVel().add(impulsePerInvMass.copy().mult(invM1)));
+        // p2.setLinearVel(p2.getLinearVel().add(impulsePerInvMass.copy().mult(-1*invM2)));
     }
 
     private void resolveInterpenetration() {

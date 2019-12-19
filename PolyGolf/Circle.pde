@@ -2,6 +2,7 @@ class Circle extends Shape {
 
     public Circle(PVector position, int radius) {
         super(ShapeType.CIRCLE, position, radius);
+        inertia = 0.5*sq(radius);
     }
 
     public PVector getPosition() {
