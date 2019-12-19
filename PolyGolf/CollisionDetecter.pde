@@ -308,7 +308,7 @@ class CollisionDetector {
             stroke(255, 0, 0);
             strokeWeight(2);
             line(x1 + relPos.x,  y1 + relPos.y, x2 + relPos.x, y2 + relPos.y);
-            System.out.println();
+            //System.out.println();
         }
         return c;
     }

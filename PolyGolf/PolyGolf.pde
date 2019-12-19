@@ -1,21 +1,25 @@
 import java.util.*;
 
-PreDefTiles tiles;
+PreDefCourses courseGenerator;
+EnvironmentGenerator environmentGenerator;
+
 PolygonGenerator polyGen;
+
 CollisionDetector collisionDetect;
 ContactResolver contactResolver;
 
 List<Contact> contacts;
 
+PVector dragStart;
+
+GameMode gameMode;
+
 final color PLAYER_COLOUR = color(255);
 
 PVector offset;
 
-Environment grass = new Environment(
-    color(181, 230, 29),
-    color(37, 178, 74),
-    color(145, 184, 23)
-);
+Course course;
+
 Hole hole;
 Player player;
 
@@ -24,48 +28,95 @@ public void settings(){
 }
 
 void setup() {
-    tiles = new PreDefTiles();
+    noCursor();
+
+    gameMode = GameMode.GAME;
+    courseGenerator = new PreDefCourses();
+    environmentGenerator = new EnvironmentGenerator();
+
     polyGen = new PolygonGenerator();
     collisionDetect = new CollisionDetector();
     contactResolver = new ContactResolver();
-
     contacts = new ArrayList<Contact>();
 
-    Tile[][] holeTiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
+    dragStart = new PVector(-1, -1);
 
-    holeTiles[(Constants.GRID_SIZE - 1)/2][3] = tiles.getBasicStart();
-    holeTiles[(Constants.GRID_SIZE - 1)/2][2] = tiles.getEmptyVerticalCorridor();
-    holeTiles[(Constants.GRID_SIZE - 1)/2][1] = tiles.getBasicEnd();
-    // holeTiles[(Constants.GRID_SIZE - 1)/2 - 1][2] = tiles.getEmptyVerticalCorridor();
-    // holeTiles[(Constants.GRID_SIZE - 1)/2 - 1][3] = tiles.getEmptyVerticalCorridor();
-
-    ArrayList<Tile> tileList = new ArrayList<Tile>();
-    float halfGridSize = Constants.TILE_SIZE*Constants.GRID_SIZE/2;
-    offset = new PVector(displayWidth/2 - halfGridSize, displayHeight/2 - halfGridSize);
-    for (int i = 0; i < Constants.GRID_SIZE; i++) {
-        for (int j = 0; j < Constants.GRID_SIZE; j++) {
-            if (holeTiles[i][j] != null) {
-                holeTiles[i][j].setPosition(offset.copy().add(new PVector(i*Constants.TILE_SIZE, j*Constants.TILE_SIZE)));
-                tileList.add(holeTiles[i][j]);
-            }
-        }
-    }
-    hole = new Hole(grass, holeTiles, tileList, holeTiles[(Constants.GRID_SIZE - 1)/2][3], holeTiles[(Constants.GRID_SIZE - 1)/2][1]);
-    //player = new Player(hole.getStart(), polyGen.getRegularPolygon(3, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
-    player = new Player(hole.getStart(), polyGen.getRegularStar(4, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    player = new Player(polyGen.getRegularStar(4, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    course = new Course(courseGenerator.getBasicCourse(), environmentGenerator.getGrass(), player);
 }
 
 void draw() {
-    hole.draw();
-    player.update();
-    player.draw();
-    hole.checkCollisions(player);
-    contactResolver.resolveContacts();
-    drawStats();
+
+    switch(gameMode) {
+        case MENU:
+            break;
+        case GAME:
+            course.update(player);
+            course.drawCourse();
+            drawForce();
+            drawStats();
+            break;
+    }
+
+    drawCursor();
 }
 
 public void drawStats() {
     fill(0);
     textAlign(LEFT, TOP);
     text(frameRate, 0, 0);
+}
+
+void mousePressed() {
+    switch(gameMode) {
+        case MENU:
+            break;
+        case GAME:
+            if (player.isStopped()) {
+                dragStart = new PVector(mouseX, mouseY);
+            }
+            break;
+    }
+}
+
+void mouseReleased() {
+    switch(gameMode) {
+        case MENU:
+            break;
+        case GAME:
+            if (player.isStopped()) {
+                player.addForce(dragStart, dragStart.copy().sub(mouseX, mouseY).mult(-1).mult(5));
+                dragStart = new PVector(-1, -1);
+                player.addShot();
+            }
+            break;
+    }
+}
+
+void drawForce() {
+
+    if (dragStart.x != -1) {
+        stroke(0);
+        strokeWeight(5);
+
+        PVector force = dragStart.copy().sub(mouseX, mouseY);
+        PVector headHeight = force.copy().normalize().mult(15);
+        PVector headHalfWidth = force.copy().normalize().rotate(PI/2).mult(5);
+
+        PVector point0 = new PVector(mouseX, mouseY);
+        point0.sub(headHeight.copy().div(2));
+        PVector point1 = point0.copy().add(headHeight).add(headHalfWidth);
+        PVector point2 = point1.copy().sub(headHalfWidth.mult(2));
+
+        line(dragStart.x, dragStart.y, mouseX, mouseY);
+        triangle(point0.x, point0.y, point1.x, point1.y, point2.x, point2.y);
+    }
+}
+
+void drawCursor() {
+
+    stroke(0);
+    strokeWeight(1);
+    fill(0);
+    circle(mouseX, mouseY, 8);
 }

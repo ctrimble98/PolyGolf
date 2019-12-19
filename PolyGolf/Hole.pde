@@ -1,29 +1,24 @@
 class Hole {
 
-    private PVector holePos;
+    private Cup cup;
     private PVector startPos;
     private Tile[][] tiles;
     private ArrayList<Tile> tileList;
     private Environment environment;
 
-    //Random hole
-    public Hole(Environment environment) {
-        this.environment = environment;
-        holePos = new PVector(displayWidth/2, displayHeight/4);
-        tiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
-    }
+    // //Random hole
+    // public Hole(Environment environment) {
+    //     this.environment = environment;
+    //     //holePos = new PVector(displayWidth/2, displayHeight/4);
+    //     tiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
+    // }
 
     //Predefined hole
-    public Hole(Environment environment, Tile[][] tiles, ArrayList<Tile> tileList, Tile start, Tile end) {
+    public Hole(Tile[][] tiles, ArrayList<Tile> tileList, Tile start, Tile end) {
         this.tiles = tiles;
         this.tileList = tileList;
-        this.environment = environment;
-        holePos = end.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2);
+        cup = new Cup(end.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2), Constants.CUP_RADIUS);
         startPos = start.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2);
-
-        for (Tile t: tileList) {
-            t.init(environment);
-        }
     }
 
     public void draw() {
@@ -34,8 +29,14 @@ class Hole {
             t.draw(environment);
         }
 
-        fill(0);
-        ellipse(holePos.x,holePos.y, Constants.HOLE_RADIUS, Constants.HOLE_RADIUS);
+        cup.draw();
+    }
+
+    public void init(Environment e) {
+        environment = e;
+        for (Tile t: tileList) {
+            t.init(environment);
+        }
     }
 
     public PVector getStart() {
@@ -48,13 +49,11 @@ class Hole {
 
         for (Tile t: collisionTiles) {
             if (t != null) {
-
                 t.checkCollisions(player);
-
-                // fill(255,0,0);
-                // rect(t.getPosition().x, t.getPosition().y, Constants.TILE_SIZE, Constants.TILE_SIZE);
             }
         }
+
+        cup.checkCollision(player);
     }
 
     private ArrayList<Tile> getTilesInRadius(PVector position, int radius) {

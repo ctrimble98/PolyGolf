@@ -41,15 +41,7 @@ class Tile {
     }
 
     public void draw(Environment environment) {
-        // pushMatrix();
-        // translate(position.x, position.y);
-        // fill(environment.getGroundColour());
-        // rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
-        // fill(environment.getObstacleColour());
-        // for (Polygon o: obstacles) {
-        //     o.draw();
-        // }
-        // popMatrix();
+        
         imageMode(CORNER);
         image(pg, position.x, position.y);
     }
@@ -69,15 +61,8 @@ class Tile {
     }
 
     public void checkCollisions(Player player) {
-        fill(0, 255, 0);
-        circle(player.getPosition().x, player.getPosition().y, 10);
         for (Particle o: obstacles) {
             collisionDetect.checkCollision(player, o);
-            //if (collision != null) {
-            //    noStroke();
-            //    fill(255, 0, 0);
-            //    circle(collision.x + player.getPosition().x, collision.y + player.getPosition().y, 10);
-            //}
         }
     }
 }

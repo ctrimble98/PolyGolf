@@ -1,7 +1,7 @@
 class Particle {
 
     protected PVector position;
-    private PVector linearV, linearA;
+    protected PVector linearV, linearA;
     protected PVector orientation, angularV, angularA;
     protected Shape shape;
     private float mass, invMass;
@@ -54,16 +54,18 @@ class Particle {
 
     public void integrate() {
 
-
-        linearV.mult(Constants.LINEAR_DAMPING_FACTOR);
-        angularV.mult(Constants.ANGULAR_DAMPING_FACTOR);
-
+        linearV.add(linearA);
         position.add(linearV);
+        if (linearV.copy().add(angularV.copy().div(10)).mag() < 0.1) {
+            linearV = new PVector(0, 0);
+            angularV = new PVector(0, 0, 0);
+        }
     }
 
     //Taken from example from lectures
     protected void updateOrientation() {
 
+        angularV.add(angularA);
         orientation.add(angularV);
 
         // Keep in bounds
@@ -78,6 +80,12 @@ class Particle {
         integrate();
         updateOrientation();
         shape.update(position, orientation.z);
+
+        linearV.mult(Constants.LINEAR_DAMPING_FACTOR);
+        angularV.mult(Constants.ANGULAR_DAMPING_FACTOR);
+
+        linearA = new PVector(0, 0);
+        angularA = new PVector(0, 0, 0);
     }
 
     public Shape getShape() {
@@ -88,7 +96,15 @@ class Particle {
         if (invMass > 0) {
             return shape.getInertia()*mass;
         } else {
+            return 0;
+        }
+    }
 
+    public void addForce(PVector origin, PVector force) {
+        if (invMass > 0) {
+            PVector torque = origin.sub(position).cross(force);
+            angularA.add(torque.mult(1/getInertia()));
+            linearA.add(force.copy().mult(invMass));
         }
     }
 }
