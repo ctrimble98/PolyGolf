@@ -24,7 +24,10 @@ class Course {
 
     public void update(Player p) {
         player.update();
-        holes.get(currentHoleIndex).checkCollisions(player);
+        if (holes.get(currentHoleIndex).checkCollisions(player)) {
+            currentHoleIndex++;
+            startHole();
+        }
         contactResolver.resolveContacts();
     }
 

@@ -43,7 +43,7 @@ class Hole {
         return startPos;
     }
 
-    public void checkCollisions(Player player) {
+    public boolean checkCollisions(Player player) {
 
         ArrayList<Tile> collisionTiles = getTilesInRadius(player.getPosition().copy(), Constants.PLAYER_RADIUS);
 
@@ -53,7 +53,7 @@ class Hole {
             }
         }
 
-        cup.checkCollision(player);
+        return cup.checkCollision(player);
     }
 
     private ArrayList<Tile> getTilesInRadius(PVector position, int radius) {
