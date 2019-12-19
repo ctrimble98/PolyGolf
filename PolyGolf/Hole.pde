@@ -5,20 +5,19 @@ class Hole {
     private Tile[][] tiles;
     private ArrayList<Tile> tileList;
     private Environment environment;
-
-    // //Random hole
-    // public Hole(Environment environment) {
-    //     this.environment = environment;
-    //     //holePos = new PVector(displayWidth/2, displayHeight/4);
-    //     tiles = new Tile[Constants.GRID_SIZE][Constants.GRID_SIZE];
-    // }
+    private int par;
 
     //Predefined hole
-    public Hole(Tile[][] tiles, ArrayList<Tile> tileList, Tile start, Tile end) {
+    public Hole(Tile[][] tiles, ArrayList<Tile> tileList, Tile start, Tile end, int par) {
         this.tiles = tiles;
         this.tileList = tileList;
-        cup = new Cup(end.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2), Constants.CUP_RADIUS);
-        startPos = start.getPosition().copy().add(Constants.TILE_SIZE/2, Constants.TILE_SIZE/2);
+        cup = new Cup(end.getPosition().copy().add(tileSize/2, tileSize/2), Constants.CUP_RADIUS);
+        startPos = start.getPosition().copy().add(tileSize/2, tileSize/2);
+        this.par = par;
+    }
+
+    public int getPar() {
+        return par;
     }
 
     public void draw() {
@@ -58,10 +57,10 @@ class Hole {
 
     private ArrayList<Tile> getTilesInRadius(PVector position, int radius) {
         position.sub(offset);
-        int x = (int)position.x/Constants.TILE_SIZE;
-        int y = (int)position.y/Constants.TILE_SIZE;
-        PVector tileTopLeftOffset = position.copy().sub(x*Constants.TILE_SIZE, y*Constants.TILE_SIZE);
-        PVector tileBottomRightOffset = tileTopLeftOffset.copy().mult(-1).add(Constants.TILE_SIZE, Constants.TILE_SIZE);
+        int x = (int)position.x/tileSize;
+        int y = (int)position.y/tileSize;
+        PVector tileTopLeftOffset = position.copy().sub(x*tileSize, y*tileSize);
+        PVector tileBottomRightOffset = tileTopLeftOffset.copy().mult(-1).add(tileSize, tileSize);
 
         boolean xLeft = tileTopLeftOffset.x < radius;
         boolean yTop = tileTopLeftOffset.y < radius;

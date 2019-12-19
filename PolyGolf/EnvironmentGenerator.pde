@@ -7,4 +7,12 @@ class EnvironmentGenerator {
             color(145, 184, 23)
         );
     }
+
+    public Environment getIce() {
+        return new Environment(
+            color(107, 250, 241),
+            color(31, 184, 174),
+            color(140, 250, 243)
+        );
+    }
 }

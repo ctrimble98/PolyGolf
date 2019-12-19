@@ -16,19 +16,27 @@ GameMode gameMode;
 
 final color PLAYER_COLOUR = color(255);
 
-PVector offset;
+PFont infoFont;
 
 Course course;
 
 Hole hole;
 Player player;
 
+PVector offset;
+int gridWidth;
+int gridHeight;
+int tileSize;
+
 public void settings(){
     fullScreen();
 }
 
 void setup() {
+    frameRate(Constants.FPS);
     noCursor();
+
+    infoFont = createFont("SansSerif", 24);
 
     gameMode = GameMode.GAME;
     courseGenerator = new PreDefCourses();
@@ -41,7 +49,13 @@ void setup() {
 
     dragStart = new PVector(-1, -1);
 
-    player = new Player(polyGen.getRegularStar(4, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    gridHeight = displayHeight - 100;
+    tileSize = gridHeight/Constants.GRID_HEIGHT;
+    gridWidth = tileSize*Constants.GRID_WIDTH;
+
+    offset = new PVector(displayWidth/2 - gridWidth/2, displayHeight/2 - gridHeight/2);
+
+    player = new Player(polyGen.getRegularStar(3, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
     course = new Course(courseGenerator.getBasicCourse(), environmentGenerator.getGrass(), player);
 }
 
@@ -72,7 +86,7 @@ void mousePressed() {
         case MENU:
             break;
         case GAME:
-            if (player.isStopped()) {
+            if (player.isStopped() && course.getMode() == CourseMode.PLAY) {
                 dragStart = new PVector(mouseX, mouseY);
             }
             break;
@@ -84,7 +98,7 @@ void mouseReleased() {
         case MENU:
             break;
         case GAME:
-            if (player.isStopped()) {
+            if (dragStart.x != -1  && course.getMode() == CourseMode.PLAY && player.isStopped()) {
                 player.addForce(dragStart, dragStart.copy().sub(mouseX, mouseY).mult(-1).mult(5));
                 dragStart = new PVector(-1, -1);
                 player.addShot();
@@ -95,7 +109,7 @@ void mouseReleased() {
 
 void drawForce() {
 
-    if (dragStart.x != -1) {
+    if (dragStart.x != -1 && course.getMode() == CourseMode.PLAY) {
         stroke(0);
         strokeWeight(5);
 

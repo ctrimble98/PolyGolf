@@ -56,7 +56,7 @@ class Particle {
 
         linearV.add(linearA);
         position.add(linearV);
-        if (linearV.copy().add(angularV.copy().div(10)).mag() < 0.1) {
+        if (linearV.copy().add(angularV.copy().div(10)).mag() < 0.2) {
             linearV = new PVector(0, 0);
             angularV = new PVector(0, 0, 0);
         }
@@ -103,8 +103,8 @@ class Particle {
     public void addForce(PVector origin, PVector force) {
         if (invMass > 0) {
             PVector torque = origin.sub(position).cross(force);
-            angularA.add(torque.mult(1/getInertia()));
-            linearA.add(force.copy().mult(invMass));
+            angularA.add(new PVector(0, 0, min(torque.mult(1/getInertia()).z, 0.4)));
+            linearA.add(force.copy().mult(invMass).normalize().mult(min(force.copy().mult(invMass).mag(), 10)));
         }
     }
 }
