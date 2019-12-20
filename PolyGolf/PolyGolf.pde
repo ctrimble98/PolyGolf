@@ -3,6 +3,8 @@ import java.util.*;
 PreDefCourses courseGenerator;
 EnvironmentGenerator environmentGenerator;
 
+Environment currentEnvironment;
+
 PolygonGenerator polyGen;
 
 CollisionDetector collisionDetect;
@@ -38,7 +40,7 @@ void setup() {
 
     infoFont = createFont("SansSerif", 24);
 
-    gameMode = GameMode.GAME;
+    gameMode = GameMode.MENU;
     courseGenerator = new PreDefCourses();
     environmentGenerator = new EnvironmentGenerator();
 
@@ -55,14 +57,17 @@ void setup() {
 
     offset = new PVector(displayWidth/2 - gridWidth/2, displayHeight/2 - gridHeight/2);
 
-    player = new Player(polyGen.getRegularStar(3, 1, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
-    course = new Course(courseGenerator.getBasicCourse(), environmentGenerator.getGrass(), player);
+    currentEnvironment = environmentGenerator.getGrass();
+
+    player = new Player(polyGen.getRegularStar(5, 2, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+    course = new Course(courseGenerator.getBasicCourse(), currentEnvironment, player);
 }
 
 void draw() {
 
     switch(gameMode) {
         case MENU:
+            drawMenu();
             break;
         case GAME:
             course.update(player);
@@ -75,8 +80,16 @@ void draw() {
     drawCursor();
 }
 
+void drawMenu() {
+    textAlign(CENTER, CENTER);
+    background(currentEnvironment.getBackgroundColour());
+    fill(currentEnvironment.getObstacleColour());
+    text("POLYGOLF", displayWidth/2, displayHeight/4);
+}
+
 public void drawStats() {
     fill(0);
+    textFont(infoFont, 16);
     textAlign(LEFT, TOP);
     text(frameRate, 0, 0);
 }

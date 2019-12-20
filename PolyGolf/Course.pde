@@ -15,11 +15,15 @@ class Course {
         this.player = player;
         this.environment = environment;
         courseLength = holes.size();
-        scores = new int[courseLength][2];
+        scores = new int[courseLength + 1][3];
+        int totalPar = 0;
         for (int i = 0; i < courseLength; i++) {
             holes.get(i).init(environment);
-            scores[i][0] = holes.get(i).getPar();
+            scores[i][0] = i + 1;
+            scores[i][1] = holes.get(i).getPar();
+            totalPar += holes.get(i).getPar();
         }
+        scores[courseLength][1] = totalPar;
         currentHoleIndex = 0;
         startHole();
     }
@@ -55,21 +59,14 @@ class Course {
                         fill(environment.getObstacleColour());
                         textAlign(CENTER, CENTER);
                         textFont(infoFont, 60);
-                        text(getHoleResult(player.getShots() - scores[currentHoleIndex][0]), displayWidth/2, displayHeight/2);
+                        text(getHoleResult(player.getShots() - scores[currentHoleIndex][1]), displayWidth/2, displayHeight/2);
                     } else {
                         currentHoleIndex++;
                         startHole();
                     }
                 break;
             case RESULTS:
-                background(environment.getGroundColour());
-                stroke(environment.getObstacleColour());
-                int resultsSize = (Constants.GRID_WIDTH - 2)*tileSize;
-                int boxSize = resultsSize/courseLength;
-                fill(0, 0);
-                for (int i = -resultsSize/2; i < resultsSize/2; i += boxSize) {
-                    rect(i + displayWidth/2, displayHeight/2 - boxSize/2, boxSize, boxSize);
-                }
+                showResults();
                 break;
         }
 
@@ -80,7 +77,8 @@ class Course {
             player.update();
             if (holes.get(currentHoleIndex).checkCollisions(player)) {
                 mode = CourseMode.END;
-                scores[currentHoleIndex][1] = player.getShots();
+                scores[currentHoleIndex][2] = player.getShots();
+                scores[courseLength][2] += player.getShots();
                 timer = Constants.FPS;
             }
             contactResolver.resolveContacts();
@@ -92,6 +90,50 @@ class Course {
         textAlign(CENTER, TOP);
         textFont(infoFont, 30);
         text("Hole " + (currentHoleIndex + 1) + " Par " + scores[currentHoleIndex][0] + " Shots " + player.getShots(), displayWidth/2, 0);
+    }
+
+    public void showResults() {
+        background(environment.getGroundColour());
+        stroke(environment.getObstacleColour());
+        strokeWeight(5);
+        int boxSize = 50;
+        int resultsWidth = (courseLength + 1) * boxSize;
+
+        textAlign(CENTER, CENTER);
+        textFont(infoFont, 60);
+        fill(environment.getObstacleColour());
+
+        text("Results", displayWidth/2, displayHeight/2 - 3*boxSize);
+        textFont(infoFont, 40);
+
+        pushMatrix();
+        translate(displayWidth/2 - resultsWidth/2, displayHeight/2 - 3*boxSize/2);
+        text("Hole", -3*boxSize/2, boxSize/2);
+        text("Par", -3*boxSize/2, 3*boxSize/2);
+        text("Score", -3*boxSize/2, 5*boxSize/2);
+        for (int i = 0; i < courseLength + 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                pushMatrix();
+                translate(i*boxSize, j*boxSize);
+                if (i < courseLength) {
+                    fill(0, 0);
+                    rect(0, 0, boxSize, boxSize);
+                    fill(environment.getObstacleColour());
+                    text(scores[i][j], boxSize/2, boxSize/2);
+                } else {
+                    fill(0, 0);
+                    rect(0, 0, boxSize*2, boxSize);
+                    fill(environment.getObstacleColour());
+                    if (j == 0) {
+                        text("T", boxSize, boxSize/2);
+                    } else {
+                        text(scores[i][j], boxSize, boxSize/2);
+                    }
+                }
+                popMatrix();
+            }
+        }
+        popMatrix();
     }
 
     private void startHole() {
