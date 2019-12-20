@@ -100,6 +100,7 @@ class Course {
         int resultsWidth = (courseLength + 1) * boxSize;
 
         textAlign(CENTER, CENTER);
+        rectMode(CORNER);
         textFont(infoFont, 60);
         fill(environment.getObstacleColour());
 
@@ -134,6 +135,12 @@ class Course {
             }
         }
         popMatrix();
+
+        rectMode(CENTER);
+        fill(environment.getObstacleColour());
+        rect(displayWidth/2, 3*displayHeight/4, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+        fill(environment.getGroundColour());
+        text("Return to Menu", displayWidth/2, 3*displayHeight/4);
     }
 
     private void startHole() {

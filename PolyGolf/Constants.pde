@@ -3,7 +3,7 @@ final class Constants {
     final static int HOLE_BORDER_WIDTH = 20;
     final static int GRID_WIDTH = 5;
     final static int GRID_HEIGHT = 4;
-    final static int CUP_RADIUS = 30;
+    final static int CUP_RADIUS = 20;
     final static int PLAYER_RADIUS = 20;
     final static float PLAYER_INV_MASS = 0.005;
 

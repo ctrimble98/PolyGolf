@@ -31,7 +31,7 @@ class Player extends Particle {
     private void setImage() {
         pg = createGraphics(2*Constants.PLAYER_RADIUS, 2*Constants.PLAYER_RADIUS);
         pg.beginDraw();
-        pg.fill(PLAYER_COLOUR);
+        pg.fill(environments.get(currentEnvironmentIndex).getPlayerColour());
         pg.noStroke();
         shape.setImage(pg);
         pg.endDraw();

@@ -17,7 +17,7 @@ PVector dragStart;
 
 GameMode gameMode;
 
-final color PLAYER_COLOUR = color(255);
+// final color PLAYER_COLOUR = color(255);
 
 int[][] polygons;
 int currentPolygonIndex;
@@ -87,8 +87,8 @@ void draw() {
 
 void drawMenu() {
     textAlign(CENTER, CENTER);
-    background(environments.get(currentEnvironmentIndex).getBackgroundColour());
-    fill(255);
+    background(environments.get(currentEnvironmentIndex).getGroundColour());
+    fill(environments.get(currentEnvironmentIndex).getObstacleColour());
     PFont titleFont = createFont("SansSerif.bold", 180);
     textFont(titleFont);
     text("POLYGOLF", displayWidth/2, displayHeight/4);
@@ -98,24 +98,24 @@ void drawMenu() {
     rectMode(CENTER);
     pushMatrix();
     translate(displayWidth/2, displayHeight/2 - 50);
-    fill(255);
+    fill(environments.get(currentEnvironmentIndex).getObstacleColour());
     rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
-    fill(0);
+    fill(environments.get(currentEnvironmentIndex).getGroundColour());
     text("Play", 0, 0);
     translate(0, 150);
-    fill(255);
+    fill(environments.get(currentEnvironmentIndex).getObstacleColour());
     rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
-    fill(0);
+    fill(environments.get(currentEnvironmentIndex).getGroundColour());
     text("Change Environment", 0, 0);
     translate(0, 150);
-    fill(255);
+    fill(environments.get(currentEnvironmentIndex).getObstacleColour());
     rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
-    fill(0);
+    fill(environments.get(currentEnvironmentIndex).getGroundColour());
     text("Change Polygon", 0, 0);
     translate(0, 150);
-    fill(255);
+    fill(environments.get(currentEnvironmentIndex).getObstacleColour());
     rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
-    fill(0);
+    fill(environments.get(currentEnvironmentIndex).getGroundColour());
     text("Random Polygon", 0, 0);
     popMatrix();
 
@@ -123,7 +123,7 @@ void drawMenu() {
     PGraphics pg = createGraphics(400,400);
     pg.beginDraw();
     pg.noStroke();
-    pg.fill(255);
+    pg.fill(environments.get(currentEnvironmentIndex).getPlayerColour());
     currentPolygon.setImage(pg);
     pg.endDraw();
 
@@ -169,6 +169,10 @@ void mousePressed() {
         case GAME:
             if (player.isStopped() && course.getMode() == CourseMode.PLAY) {
                 dragStart = new PVector(mouseX, mouseY);
+            } else if (course.getMode() == CourseMode.RESULTS) {
+                if (mouseX > displayWidth/2 - Constants.BUTTON_WIDTH/2 && mouseX < displayWidth/2 + Constants.BUTTON_WIDTH/2 && mouseY > 3*displayHeight/4 - Constants.BUTTON_HEIGHT/2 && mouseY < 3*displayHeight/4 + Constants.BUTTON_HEIGHT/2) {
+                    gameMode = GameMode.MENU;
+                }
             }
             break;
     }
