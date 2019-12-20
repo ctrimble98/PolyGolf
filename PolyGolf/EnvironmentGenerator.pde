@@ -1,5 +1,12 @@
 class EnvironmentGenerator {
 
+    public List<Environment> getEnvironments() {
+        List<Environment> environments = new ArrayList<Environment>();
+        environments.add(getGrass());
+        environments.add(getIce());
+        return environments;
+    }
+
     public Environment getGrass() {
         return new Environment(
             color(181, 230, 29),

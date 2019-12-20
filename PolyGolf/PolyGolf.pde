@@ -3,7 +3,8 @@ import java.util.*;
 PreDefCourses courseGenerator;
 EnvironmentGenerator environmentGenerator;
 
-Environment currentEnvironment;
+List<Environment> environments;
+int currentEnvironmentIndex;
 
 PolygonGenerator polyGen;
 
@@ -17,6 +18,10 @@ PVector dragStart;
 GameMode gameMode;
 
 final color PLAYER_COLOUR = color(255);
+
+int[][] polygons;
+int currentPolygonIndex;
+float rotation;
 
 PFont infoFont;
 
@@ -57,10 +62,10 @@ void setup() {
 
     offset = new PVector(displayWidth/2 - gridWidth/2, displayHeight/2 - gridHeight/2);
 
-    currentEnvironment = environmentGenerator.getGrass();
+    environments = environmentGenerator.getEnvironments();
+    currentEnvironmentIndex = 0;
 
-    player = new Player(polyGen.getRegularStar(5, 2, Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
-    course = new Course(courseGenerator.getBasicCourse(), currentEnvironment, player);
+    fillPolygons();
 }
 
 void draw() {
@@ -82,9 +87,59 @@ void draw() {
 
 void drawMenu() {
     textAlign(CENTER, CENTER);
-    background(currentEnvironment.getBackgroundColour());
-    fill(currentEnvironment.getObstacleColour());
+    background(environments.get(currentEnvironmentIndex).getBackgroundColour());
+    fill(255);
+    PFont titleFont = createFont("SansSerif.bold", 180);
+    textFont(titleFont);
     text("POLYGOLF", displayWidth/2, displayHeight/4);
+
+    textFont(infoFont);
+    noStroke();
+    rectMode(CENTER);
+    pushMatrix();
+    translate(displayWidth/2, displayHeight/2 - 50);
+    fill(255);
+    rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+    fill(0);
+    text("Play", 0, 0);
+    translate(0, 150);
+    fill(255);
+    rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+    fill(0);
+    text("Change Environment", 0, 0);
+    translate(0, 150);
+    fill(255);
+    rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+    fill(0);
+    text("Change Polygon", 0, 0);
+    translate(0, 150);
+    fill(255);
+    rect(0, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+    fill(0);
+    text("Random Polygon", 0, 0);
+    popMatrix();
+
+    Shape currentPolygon = polyGen.getRegularStar(polygons[currentPolygonIndex][0], polygons[currentPolygonIndex][1], 200, 0, new PVector(200, 200));
+    PGraphics pg = createGraphics(400,400);
+    pg.beginDraw();
+    pg.noStroke();
+    pg.fill(255);
+    currentPolygon.setImage(pg);
+    pg.endDraw();
+
+    imageMode(CENTER);
+    pushMatrix();
+    translate(displayWidth/4, displayHeight/2 + 175);
+    rotate(rotation);
+    image(pg, 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(3*displayWidth/4, displayHeight/2 + 175);
+    rotate(-rotation);
+    image(pg, 0, 0);
+    popMatrix();
+    rotation += 0.01;
 }
 
 public void drawStats() {
@@ -97,6 +152,19 @@ public void drawStats() {
 void mousePressed() {
     switch(gameMode) {
         case MENU:
+            if (mouseX > displayWidth/2 - Constants.BUTTON_WIDTH/2 && mouseX < displayWidth/2 + Constants.BUTTON_WIDTH/2) {
+                if (mouseY > displayHeight/2 - Constants.BUTTON_HEIGHT/2 - 50 && mouseY < displayHeight/2 + Constants.BUTTON_HEIGHT/2 - 50) {
+                    player = new Player(polyGen.getRegularStar(polygons[currentPolygonIndex][0], polygons[currentPolygonIndex][1], Constants.PLAYER_RADIUS, PI/4, new PVector(Constants.PLAYER_RADIUS, Constants.PLAYER_RADIUS)));
+                    course = new Course(courseGenerator.getBasicCourse(), environments.get(currentEnvironmentIndex), player);
+                    gameMode = GameMode.GAME;
+                } else if (mouseY > displayHeight/2 - Constants.BUTTON_HEIGHT/2 + 100 && mouseY < displayHeight/2 + Constants.BUTTON_HEIGHT/2 + 100) {
+                    currentEnvironmentIndex = (currentEnvironmentIndex + 1) % environments.size();
+                } else if (mouseY > displayHeight/2 - Constants.BUTTON_HEIGHT/2 + 250 && mouseY < displayHeight/2 + Constants.BUTTON_HEIGHT/2 + 250) {
+                    currentPolygonIndex = (currentPolygonIndex + 1) % polygons.length;
+                } else if (mouseY > displayHeight/2 - Constants.BUTTON_HEIGHT/2 + 400 && mouseY < displayHeight/2 + Constants.BUTTON_HEIGHT/2 + 400) {
+                    currentPolygonIndex = (int)random(polygons.length);
+                }
+            }
             break;
         case GAME:
             if (player.isStopped() && course.getMode() == CourseMode.PLAY) {
@@ -108,8 +176,6 @@ void mousePressed() {
 
 void mouseReleased() {
     switch(gameMode) {
-        case MENU:
-            break;
         case GAME:
             if (dragStart.x != -1  && course.getMode() == CourseMode.PLAY && player.isStopped()) {
                 player.addForce(dragStart, dragStart.copy().sub(mouseX, mouseY).mult(-1).mult(5));
@@ -146,4 +212,26 @@ void drawCursor() {
     strokeWeight(1);
     fill(0);
     circle(mouseX, mouseY, 8);
+}
+
+public void fillPolygons() {
+    polygons = new int[][]{
+        {3, 1},
+        {4, 1},
+        {5, 1},
+        {6, 1},
+        {7, 1},
+        {5, 2},
+        {6, 2},
+        {7, 2},
+        {7, 3},
+        {8, 2},
+        {8, 3},
+        {9, 3},
+        {9, 4},
+        {12, 5}
+    };
+
+    currentPolygonIndex = 0;
+    rotation = 0;
 }

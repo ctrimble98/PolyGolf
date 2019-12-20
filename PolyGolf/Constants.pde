@@ -11,4 +11,7 @@ final class Constants {
     final static float ANGULAR_DAMPING_FACTOR = 0.995;
 
     final static float COEFF_OF_RESTITUTION = 0.2;
+
+    final static int BUTTON_WIDTH = 400;
+    final static int BUTTON_HEIGHT = 100;
 }
