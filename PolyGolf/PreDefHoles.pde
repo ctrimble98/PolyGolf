@@ -123,4 +123,22 @@ class PreDefHoles {
 
         return new Hole(holeTiles, tileList, tileList.get(0), tileList.get(tileList.size() - 1), 2);
     }
+
+    public Hole getBasic7() {
+        ArrayList<Tile> tileList = new ArrayList<Tile>();
+        tileList.add(preDefTiles.getEmpty(2, 3, Borders.HORIZONTAL_CORRIDOR));
+        tileList.add(preDefTiles.getSquareObstacle(1, 3, Borders.LEFT_TURN_2));
+        tileList.add(preDefTiles.getSquareObstacle(3, 3, Borders.RIGHT_TURN_2));
+        tileList.add(preDefTiles.getSquareObstacle(1, 2, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getSquareObstacle(3, 2, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getSquareObstacle(1, 1, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getSquareObstacle(3, 1, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getSquareObstacle(1, 0, Borders.RIGHT_TURN_1));
+        tileList.add(preDefTiles.getSquareObstacle(3, 0, Borders.LEFT_TURN_1));
+        tileList.add(preDefTiles.getEmpty(2, 0, Borders.HORIZONTAL_CORRIDOR));
+
+        Tile[][] holeTiles = setTilePositions(tileList);
+
+        return new Hole(holeTiles, tileList, tileList.get(0), tileList.get(tileList.size() - 1), 2);
+    }
 }

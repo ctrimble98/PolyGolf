@@ -13,7 +13,7 @@ class Cup {
         if (dist < radius) {
             println(p.getLinearVel().mag());
             println(20*(1 - dist/radius));
-            if (p.getLinearVel().mag() < 20*(1 - dist/radius)) {
+            if (p.getLinearVel().mag() < 12*(1 - dist/radius)) {
                 return true;
             }
             return false;

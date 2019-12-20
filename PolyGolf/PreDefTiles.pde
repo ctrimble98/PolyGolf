@@ -93,4 +93,11 @@ class PreDefTiles {
         obstacles.add(polyGen.getRectangle(new PVector(tileSize - 20, tileSize/2), new PVector(tileSize, tileSize)));
         return new Tile(getBorders(b), obstacles, indexX, indexY);
     }
+
+    public Tile getSquareObstacle(int indexX, int indexY, Borders b) {
+        ArrayList<Shape> obstacles = new ArrayList<Shape>();
+        int squareRadius = 40;
+        obstacles.add(polyGen.getRectangle(new PVector(tileSize/2 - squareRadius, tileSize/2 - squareRadius), new PVector(tileSize/2 + squareRadius, tileSize/2 + squareRadius)));
+        return new Tile(getBorders(b), obstacles, indexX, indexY);
+    }
 }

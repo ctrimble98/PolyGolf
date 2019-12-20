@@ -89,7 +89,7 @@ class Course {
         fill(0);
         textAlign(CENTER, TOP);
         textFont(infoFont, 30);
-        text("Hole " + (currentHoleIndex + 1) + " Par " + scores[currentHoleIndex][0] + " Shots " + player.getShots(), displayWidth/2, 0);
+        text("Hole " + (currentHoleIndex + 1) + " Par " + scores[currentHoleIndex][1] + " Shots " + player.getShots(), displayWidth/2, 0);
     }
 
     public void showResults() {

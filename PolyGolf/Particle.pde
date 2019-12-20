@@ -55,7 +55,7 @@ class Particle {
     public void integrate() {
 
         linearV.add(linearA);
-        position.add(linearV.copy().normalize().mult(min(linearV.mag(), 20)));
+        position.add(linearV.copy().normalize().mult(min(linearV.mag(), 10)));
         if (linearV.copy().mag() < 0.2 && angularV.mag() < 0.03) {
             linearV = new PVector(0, 0);
             angularV = new PVector(0, 0, 0);

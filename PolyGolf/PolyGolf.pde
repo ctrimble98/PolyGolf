@@ -236,6 +236,6 @@ public void fillPolygons() {
         {12, 5}
     };
 
-    currentPolygonIndex = 0;
+    currentPolygonIndex = (int)random(polygons.length);
     rotation = 0;
 }
