@@ -139,6 +139,46 @@ class PreDefHoles {
 
         Tile[][] holeTiles = setTilePositions(tileList);
 
+        return new Hole(holeTiles, tileList, tileList.get(0), tileList.get(tileList.size() - 1), 3);
+    }
+
+    public Hole getBasic8() {
+        ArrayList<Tile> tileList = new ArrayList<Tile>();
+        tileList.add(preDefTiles.getEmpty(0, 3, Borders.LEFT_TURN_2));
+        tileList.add(preDefTiles.getEmpty(1, 3, Borders.HORIZONTAL_CORRIDOR));
+        tileList.add(preDefTiles.getEmpty(2, 3, Borders.RIGHT_TURN_2));
+        tileList.add(preDefTiles.getEmpty(3, 3, Borders.C));
+        tileList.add(preDefTiles.getEmpty(4, 3, Borders.RIGHT_TURN_2));
+        tileList.add(preDefTiles.getEmpty(0, 2, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getEmpty(1, 2, Borders.C));
+        tileList.add(preDefTiles.getEmpty(2, 2, Borders.LEFT_TURN_1));
+        tileList.add(preDefTiles.getEmpty(3, 2, Borders.LEFT_TURN_2));
+        tileList.add(preDefTiles.getEmpty(4, 2, Borders.RIGHT));
+        tileList.add(preDefTiles.getEmpty(0, 1, Borders.RIGHT_TURN_1));
+        tileList.add(preDefTiles.getEmpty(1, 1, Borders.RIGHT_TURN_2));
+        tileList.add(preDefTiles.getEmpty(2, 1, Borders.C));
+        tileList.add(preDefTiles.getEmpty(3, 1, Borders.RIGHT));
+        tileList.add(preDefTiles.getEmpty(4, 1, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getEmpty(0, 0, Borders.C));
+        tileList.add(preDefTiles.getEmpty(1, 0, Borders.TOP));
+        tileList.add(preDefTiles.getEmpty(2, 0, Borders.HORIZONTAL_CORRIDOR));
+        tileList.add(preDefTiles.getEmpty(3, 0, Borders.LEFT_TURN_1));
+        tileList.add(preDefTiles.getEmpty(4, 0, Borders.N));
+
+        Tile[][] holeTiles = setTilePositions(tileList);
+
+        return new Hole(holeTiles, tileList, tileList.get(0), tileList.get(tileList.size() - 1), 5);
+    }
+
+    public Hole getBasic9() {
+        ArrayList<Tile> tileList = new ArrayList<Tile>();
+        tileList.add(preDefTiles.getEmpty(2, 3, Borders.U));
+        tileList.add(preDefTiles.getBottomGapBig(2, 2, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getBottomGapMedium(2, 1, Borders.VERTICAL_CORRIDOR));
+        tileList.add(preDefTiles.getBottomGapSmall(2, 0, Borders.N));
+
+        Tile[][] holeTiles = setTilePositions(tileList);
+
         return new Hole(holeTiles, tileList, tileList.get(0), tileList.get(tileList.size() - 1), 2);
     }
 }

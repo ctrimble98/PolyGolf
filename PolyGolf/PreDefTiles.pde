@@ -86,6 +86,27 @@ class PreDefTiles {
         return new Tile(getBorders(b), obstacles, indexX, indexY);
     }
 
+    public Tile getBottomGapSmall(int indexX, int indexY, Borders b) {
+        ArrayList<Shape> obstacles = new ArrayList<Shape>();
+        obstacles.add(polyGen.getRectangle(new PVector(0, tileSize - 20), new PVector(2*tileSize/5, tileSize)));
+        obstacles.add(polyGen.getRectangle(new PVector(3*tileSize/5, tileSize - 20), new PVector(tileSize, tileSize)));
+        return new Tile(getBorders(b), obstacles, indexX, indexY);
+    }
+
+    public Tile getBottomGapMedium(int indexX, int indexY, Borders b) {
+        ArrayList<Shape> obstacles = new ArrayList<Shape>();
+        obstacles.add(polyGen.getRectangle(new PVector(0, tileSize - 20), new PVector(tileSize/3, tileSize)));
+        obstacles.add(polyGen.getRectangle(new PVector(2*tileSize/3, tileSize - 20), new PVector(tileSize, tileSize)));
+        return new Tile(getBorders(b), obstacles, indexX, indexY);
+    }
+
+    public Tile getBottomGapBig(int indexX, int indexY, Borders b) {
+        ArrayList<Shape> obstacles = new ArrayList<Shape>();
+        obstacles.add(polyGen.getRectangle(new PVector(0, tileSize - 20), new PVector(tileSize/4, tileSize)));
+        obstacles.add(polyGen.getRectangle(new PVector(3*tileSize/4, tileSize - 20), new PVector(tileSize, tileSize)));
+        return new Tile(getBorders(b), obstacles, indexX, indexY);
+    }
+
     public Tile getZigZagTop(int indexX, int indexY, Borders b) {
         ArrayList<Shape> obstacles = new ArrayList<Shape>();
         obstacles.add(polyGen.getRectangle(new PVector(tileSize/2 - 10, 0), new PVector(tileSize/2 + 10, tileSize/2)));

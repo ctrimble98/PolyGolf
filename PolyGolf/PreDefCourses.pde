@@ -15,6 +15,8 @@ class PreDefCourses {
         holes.add(preDefHoles.getBasic5());
         holes.add(preDefHoles.getBasic6());
         holes.add(preDefHoles.getBasic7());
+        holes.add(preDefHoles.getBasic8());
+        holes.add(preDefHoles.getBasic9());
         return holes;
     }
 }

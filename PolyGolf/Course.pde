@@ -97,7 +97,7 @@ class Course {
         stroke(environment.getObstacleColour());
         strokeWeight(5);
         int boxSize = 50;
-        int resultsWidth = (courseLength + 1) * boxSize;
+        int resultsWidth = (courseLength + 2) * boxSize;
 
         textAlign(CENTER, CENTER);
         rectMode(CORNER);

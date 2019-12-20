@@ -104,7 +104,7 @@ class Particle {
         if (invMass > 0) {
             PVector torque = origin.sub(position).cross(force);
             angularA.add(new PVector(0, 0, min(torque.mult(1/getInertia()).z, 0.4)));
-            linearA.add(force.copy().mult(invMass).normalize().mult(min(force.copy().mult(invMass).mag(), 10)));
+            linearA.add(force.copy().mult(invMass).normalize().mult(min(force.copy().mult(invMass).mag(), 20)));
         }
     }
 }

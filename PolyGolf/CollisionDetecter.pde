@@ -121,39 +121,6 @@ class CollisionDetector {
         return null;
     }
 
-    // // POLYGON/POLYGON
-    // public void checkCollisionPolyPoly(List<PVector> p1, List<PVector> p2) {
-    //
-    //     // go through each of the vertices, plus the next
-    //     // vertex in the list
-    //     int next = 0;
-    //     for (int current=0; current<p1.size(); current++) {
-    //
-    //         // get next vertex in list
-    //         // if we've hit the end, wrap around to 0
-    //         next = current+1;
-    //         if (next == p1.size()) {
-    //             next = 0;
-    //         }
-    //
-    //         // get the PVectors at our current position
-    //         // this makes our if statement a little cleaner
-    //         PVector vc = p1.get(current);    // c for "current"
-    //         PVector vn = p1.get(next);       // n for "next"
-    //
-    //         // now we can use these two points (a line) to compare
-    //         // to the other polygon's vertices using polyLine()
-    //         Contact collision = checkCollisionPolyLine(p2, vc.x,vc.y,vn.x,vn.y);
-    //         if (collision != null) return collision;
-    //
-    //         // // optional: check if the 2nd polygon is INSIDE the first
-    //         // collision = polyPoint(p1, p2.get(0).x, p2.get(0).y);
-    //         // if (collision) return true;
-    //     }
-    //
-    //     return null;
-    // }
-
     // POLYGON/POLYGON
     public void checkCollisionPolyPoly(Polygon poly1, Polygon poly2) {
 
@@ -177,21 +144,6 @@ class CollisionDetector {
                 contacts.add(c);
             }
         }
-
-
-        // Contact c = checkContactPolyPoint(poly2, v1.get(0).x, v1.get(0).y, relPos);
-        // if (c != null) {
-        //     contacts.add(c);
-        // }
-        //
-        // System.out.println(v1.get(0));
-        // System.out.println(v2.get(0));
-        // System.out.println();
-        //
-        // c = checkContactPolyPoint(poly1, v2.get(0).x, v2.get(0).y, relPos);
-        // if (c != null) {
-        //     contacts.add(c);
-        // }
     }
 
 
@@ -274,25 +226,8 @@ class CollisionDetector {
             float xDiff = x2 - x1;
             float yDiff = y2 - y1;
 
-            // System.out.println(xDiff);
-            // System.out.println(yDiff);
-            // System.out.println(x1 + " " + y1);
-            // System.out.println(x2 + " " + y2);
-            // System.out.println(x + " " + y);
-
-            //Check if center of polygon is on same side of line as the  point to know if point is inside polygon
-            // https://math.stackexchange.com/questions/162728/how-to-determine-if-2-points-are-on-opposite-sides-of-a-line
-            // if ((-yDiff*(x - x1) + xDiff*(y - y1))*(-yDiff*(p.getPosition().x - x1) + xDiff*(p.getPosition().y - y1)) >= 0) {
-
             float lineLen = sqrt(sq(yDiff) + sq(xDiff));
             float penDepth = abs(yDiff*x - xDiff*y + x2*y1 - y2*x1)/lineLen;
-            // System.out.println(xDiff);
-            // System.out.println(yDiff);
-            // System.out.println(x1 + " " + y1);
-            // System.out.println(x2 + " " + y2);
-            // System.out.println(x + " " + y);
-            // System.out.println(lineLen);
-            // System.out.println(penDepth);
 
             if (penDepth < minPenDepth) {
                 minPenDepth = penDepth;
@@ -301,14 +236,8 @@ class CollisionDetector {
                     normal.mult(-1);
                 }
                 normal.normalize();
-                // System.out.println(normal);
                 c = new Contact(p1, p2, new PVector(x, y), normal, penDepth);
             }
-
-            stroke(255, 0, 0);
-            strokeWeight(2);
-            line(x1 + relPos.x,  y1 + relPos.y, x2 + relPos.x, y2 + relPos.y);
-            //System.out.println();
         }
         return c;
     }
