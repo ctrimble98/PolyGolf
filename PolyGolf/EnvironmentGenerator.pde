@@ -22,7 +22,7 @@ class EnvironmentGenerator {
             color(107, 250, 241),
             color(31, 184, 174),
             color(140, 250, 243),
-            color(255)
+            color(8, 78, 191)
         );
     }
 

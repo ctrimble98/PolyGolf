@@ -11,8 +11,6 @@ class Cup {
     public boolean checkCollision(Particle p) {
         float dist = p.getPosition().dist(position);
         if (dist < radius) {
-            println(p.getLinearVel().mag());
-            println(20*(1 - dist/radius));
             if (p.getLinearVel().mag() < 20*(1 - dist/radius)) {
                 return true;
             }
