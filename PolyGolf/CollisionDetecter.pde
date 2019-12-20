@@ -92,13 +92,6 @@ class CollisionDetector {
 
         float discriminant = radius*radius * dr2 - D*D;
 
-        // if (!needCollisionPoint) {
-        //     if (discriminant >= 0) {
-        //         return new PVector(0,0);
-        //     }
-        //     return null;
-        // }
-
         if (discriminant > 0) {
             float dRoot = sqrt(D);
             float xRoot = sign(dy)*dx*dRoot;
@@ -198,6 +191,7 @@ class CollisionDetector {
         return null;
     }
 
+    //Method to check for contacts between a polygon a and a point
     public Contact checkContactPolyPoint(Polygon p, float x, float y, PVector relPos) {
 
         List<PVector> vertices = p.getVertices(relPos);
@@ -211,10 +205,10 @@ class CollisionDetector {
 
         for (int current = 0; current<vertices.size(); current++) {
 
-            // get next vertex in list
-            // if we've hit the end, wrap around to 0
             next = current + 1;
-            if (next == vertices.size()) next = 0;
+            if (next == vertices.size()) {
+                next = 0;
+            }
 
             // get the PVectors at our current position
             // extract X/Y coordinates from each
