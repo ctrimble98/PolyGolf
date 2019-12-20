@@ -48,8 +48,8 @@ class Contact {
             changeVel1 = new PVector(0,0,0);
         }
 
-        float changeVelocity = changeVel1.dot(normal);
-        changeVelocity += invM1;
+        float changeVelocityPerImpulse = changeVel1.dot(normal);
+        changeVelocityPerImpulse += invM1;
 
         if (invM2 > 0) {
             changeVel2 = position1.copy().cross(normal);
@@ -59,10 +59,10 @@ class Contact {
             changeVel2 = new PVector(0,0,0);
         }
 
-        changeVelocity += changeVel2.dot(normal);
-        changeVelocity += invM2;
+        changeVelocityPerImpulse += changeVel2.dot(normal);
+        changeVelocityPerImpulse += invM2;
 
-        float impulseRequired = desiredChangeVelocity/changeVelocity;
+        float impulseRequired = desiredChangeVelocity/changeVelocityPerImpulse;
 
         PVector impulse = normal.copy().mult(impulseRequired);
 
@@ -91,6 +91,7 @@ class Contact {
 
         return -(contactVelocity.dot(normal)/normal.mag()) * (1 + Constants.COEFF_OF_RESTITUTION);
     }
+    
     private void resolveInterpenetration() {
 
         float invM1 = p1.getInvMass();
